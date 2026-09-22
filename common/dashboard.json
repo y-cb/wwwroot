@@ -1,0 +1,26 @@
+[
+	{"name":"admin",
+		"data_avg":{"sys_basic_info":"1","traffic_info":"0","sys_info":"1","license_info":"1","user_info":"0","admin_info":"1","app_info":"0","syslog_info":"1","ips_info":"0","av_info":"1","appcate_info":"0","seclog_info":"1","ipslog_info":"1","avlog_info":"1","lang":"cn"},
+		"data_acg":{"sys_basic_info":"1","traffic_info":"1","sys_info":"1","license_info":"1","user_info":"1","admin_info":"1","app_info":"1","syslog_info":"1","ips_info":"0","av_info":"0","appcate_info":"1","seclog_info":"1","ipslog_info":"0","avlog_info":"0","lang":"cn"},
+		"data_ips":{"sys_basic_info":"1","traffic_info":"0","sys_info":"1","license_info":"1","user_info":"1","admin_info":"1","app_info":"0","syslog_info":"1","ips_info":"1","av_info":"1","appcate_info":"0","seclog_info":"1","ipslog_info":"1","avlog_info":"1","lang":"cn"},
+		"data":{"sys_basic_info":"1","traffic_info":"1","sys_info":"1","license_info":"1","user_info":"1","admin_info":"0","app_info":"1","syslog_info":"1","ips_info":"1","av_info":"1","appcate_info":"1","seclog_info":"1","ipslog_info":"1","avlog_info":"1","lang":"cn"}
+	},
+	{"name":"audit",
+		"data_avg":{"sys_basic_info":"1","traffic_info":"0","sys_info":"1","license_info":"1","user_info":"0","admin_info":"1","app_info":"0","syslog_info":"1","ips_info":"0","av_info":"1","appcate_info":"0","seclog_info":"1","ipslog_info":"1","avlog_info":"1","lang":"cn"},
+		"data_acg":{"sys_basic_info":"1","traffic_info":"1","sys_info":"1","license_info":"1","user_info":"1","admin_info":"1","app_info":"1","syslog_info":"1","ips_info":"0","av_info":"0","appcate_info":"1","seclog_info":"1","ipslog_info":"0","avlog_info":"0","lang":"cn"},
+		"data_ips":{"sys_basic_info":"1","traffic_info":"0","sys_info":"1","license_info":"1","user_info":"1","admin_info":"1","app_info":"0","syslog_info":"1","ips_info":"1","av_info":"1","appcate_info":"0","seclog_info":"1","ipslog_info":"1","avlog_info":"1","lang":"cn"},
+		"data":{"sys_basic_info":"1","traffic_info":"1","sys_info":"1","license_info":"1","user_info":"1","admin_info":"1","app_info":"1","syslog_info":"1","ips_info":"1","av_info":"1","appcate_info":"1","seclog_info":"1","ipslog_info":"1","avlog_info":"1","lang":"cn"}
+	},
+	{"name":"useradmin",
+		"data_avg":{"sys_basic_info":"1","traffic_info":"0","sys_info":"1","license_info":"1","user_info":"0","admin_info":"1","app_info":"0","syslog_info":"1","ips_info":"0","av_info":"1","appcate_info":"0","seclog_info":"1","ipslog_info":"1","avlog_info":"1","lang":"cn"},
+		"data_acg":{"sys_basic_info":"1","traffic_info":"1","sys_info":"1","license_info":"1","user_info":"1","admin_info":"1","app_info":"1","syslog_info":"1","ips_info":"0","av_info":"0","appcate_info":"1","seclog_info":"1","ipslog_info":"0","avlog_info":"0","lang":"cn"},
+		"data_ips":{"sys_basic_info":"1","traffic_info":"0","sys_info":"1","license_info":"1","user_info":"1","admin_info":"1","app_info":"0","syslog_info":"1","ips_info":"1","av_info":"1","appcate_info":"0","seclog_info":"1","ipslog_info":"1","avlog_info":"1","lang":"cn"},
+		"data":{"sys_basic_info":"1","traffic_info":"1","sys_info":"1","license_info":"1","user_info":"1","admin_info":"1","app_info":"1","syslog_info":"1","ips_info":"1","av_info":"1","appcate_info":"1","seclog_info":"1","ipslog_info":"1","avlog_info":"1","lang":"cn"}
+	},
+	{"name":"others",
+		"data_avg":{"sys_basic_info":"1","traffic_info":"0","sys_info":"1","license_info":"1","user_info":"0","admin_info":"1","app_info":"0","syslog_info":"1","ips_info":"0","av_info":"1","appcate_info":"0","seclog_info":"1","ipslog_info":"1","avlog_info":"1","lang":"cn"},
+		"data_acg":{"sys_basic_info":"1","traffic_info":"1","sys_info":"1","license_info":"1","user_info":"1","admin_info":"1","app_info":"1","syslog_info":"1","ips_info":"0","av_info":"0","appcate_info":"1","seclog_info":"1","ipslog_info":"0","avlog_info":"0","lang":"cn"},
+		"data_ips":{"sys_basic_info":"1","traffic_info":"0","sys_info":"1","license_info":"1","user_info":"1","admin_info":"1","app_info":"0","syslog_info":"1","ips_info":"1","av_info":"1","appcate_info":"0","seclog_info":"1","ipslog_info":"1","avlog_info":"1","lang":"cn"},
+		"data":{"sys_basic_info":"1","traffic_info":"1","sys_info":"1","license_info":"1","user_info":"1","admin_info":"1","app_info":"1","syslog_info":"1","ips_info":"1","av_info":"1","appcate_info":"1","seclog_info":"1","ipslog_info":"1","avlog_info":"1","lang":"cn"}
+	}
+]

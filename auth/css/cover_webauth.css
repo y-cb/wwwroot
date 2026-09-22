@@ -1,0 +1,256 @@
+/* CSS Document for web-auth */
+body,html{
+	font-size:13px;
+	color:#394D66;
+}
+
+input{
+	border:1px solid #2955b1;
+}
+.logo_show{
+	width: 240px;
+    height: 50px;
+    float: right;
+    margin-right: 45px;
+    margin-top: 40px;
+	background: url(../images/auth_logo.png) center no-repeat;														  
+}
+
+#info,#msg_info,#free_webauth_info,#mix_webauth_info{
+	max-width:345px;
+	margin:0px auto;
+}
+
+.web_title{
+	text-align: center;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+#center{
+	border-radius: 10px;
+    background: #fff;
+    max-height: 270px;
+	/* background: url(../images/main_logo.gif) top center no-repeat; */
+	width:100%;
+	height:100%;
+	position:absolute;
+	/* margin:150px auto; */
+}
+
+#center_mobile{
+	border-radius: 10px;
+    background: #fff;
+	/* background: url(../images/main_logo.gif) top center no-repeat;*/
+	width:345px;
+	height:355px;
+	position:absolute;
+	margin:5px auto;
+}
+
+.admin_text{
+	width:200px;
+	height:30px;
+	border:1px solid #e8eef7;
+	background: #e8eef7;
+	line-height:30px;
+	/*background-image:url(../images/main_text1.gif);*/
+	padding-left:8px;
+}
+
+td{
+	height:12px;
+	vertical-align:left;
+	font-size:13px;
+	color:#333;
+	font-weight: bold;
+}
+
+table.info{
+	position:absolute;
+	left:80px;
+	top:50px;
+	border-collapse:separate;
+	border-spacing:0px 9px;
+}
+#center_mobile table.info{
+	left: 15px;
+}
+#authlogin1 table.info,#center table.info{
+	left:30px;
+}
+#authlogin1 table.info tr:first-child td{
+	line-height: 25px !important;
+}
+
+#authlogin table td:first-child{
+	width: 50px;
+	/* display: contents; */
+}
+
+a.login{
+	display:block;
+	width:96px;
+	height:44px;
+	background:url(../images/admin_true_a.gif) center center no-repeat;
+	color:#e0e5f5;
+	font-size:14px;
+	font-weight:bold;
+	text-decoration:none;
+	text-align:center;
+	line-height:27px;
+	position:absolute;
+	left:271px;
+	top:214px;
+}
+
+.cover {
+	text-align:center;
+}
+
+a.login:hover{
+	background-image:url(../images/admin_true_b.gif);
+}
+
+a.logincancel{
+	display:block;
+	width:96px;
+	height:44px;
+	background:url(../images/admin_cancel_a.gif) center center no-repeat;
+	color:#e0e5f5;
+	font-size:14px;
+	font-weight:bold;
+	text-decoration:none;
+	text-align:center;
+	line-height:27px;
+	position:absolute;
+	left:271px;
+	top:214px;
+}
+
+a.logincancel:hover{
+	background-image:url(../images/admin_cancel_b.gif);
+}
+
+a.logintrue{
+	display:block;
+	width:97px;
+	height:28px;
+	background:url(../images/admin_logout_a.gif) center center no-repeat;
+	color:#e0e5f5;
+	font-size:14px;
+	font-weight:bold;
+	text-decoration:none;
+	text-align:center;
+	line-height:27px;
+	position:absolute;
+	left:271px;
+	top:214px;
+}
+
+a.logintrue:hover{
+	background-image:url(../images/admin_logout_b.gif);
+}
+
+a.adminlogout{
+	display:block;
+	width:97px;
+	height:28px;
+	background:url(../images/login_adminbg_a.gif) center center no-repeat;
+	color:#e0e5f5;
+	font-size:14px;
+	font-weight:bold;
+	text-decoration:none;
+	text-align:center;
+	line-height:27px;
+	position:absolute;
+	left:271px;
+	top:214px;
+}
+
+a.adminlogout:hover{
+	background-image:url(../images/login_adminbg_b.gif);
+}
+
+td.changetext{
+	color:#4485BE;
+	font-size:12px;
+	font-weight:normal;
+}
+td.changetext a{
+	color:#4485BE;
+	text-decoration:none;
+}
+td.changetext a:hover{
+	color:#FF6600;
+	text-decoration:underline;
+}
+
+p{
+	color:red;
+	font-size:12px;
+	font-weight:normal;
+	position:absolute;
+	margin-top:18px;
+	left:30px;
+	top:30px;
+	padding-left:35px;
+}
+/*
+#change{
+	left:90px;}*/
+#change td{
+	height:30px;
+}
+#handin{
+	left:98px;
+	top:218px;
+}
+#auth_lang{
+	height: 30px;
+	background: #e8eef7;
+	border: 0px;
+}
+#cncl{
+	top:220px;
+}
+td.imptant{
+	color:red;
+	text-align:center;
+	font-size:14px;
+	padding-bottom:5px;
+}
+td.text{
+	font-weight:normal;
+	line-height:24px;
+	font-size:12px;
+}
+a.back:visited {
+	color:#394D66;
+}
+a.back:hover {
+	text-decoration:underline;
+	color:red;
+}
+a.back:link {
+	color:#394D66;
+}
+
+.sbox3{
+	width:200px;
+	height:30px;
+	line-height:30px;
+	border: 1px solid #e8eef7;
+	color:#666666;
+	font-size:12px;
+	vertical-align: bottom;
+	padding-left:8px;
+	background: #e8eef7;
+}
+
+span{
+	position:absolute;
+	margin:290px 0 0 130px;
+}

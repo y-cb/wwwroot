@@ -1,0 +1,171 @@
+<?php
+require_once '../common/config.inc';
+require_once '../common/common.inc';
+require_once 'sslvpn_lang.php';
+
+$DEMO_DATA = 0;
+
+$logofile = '/mnt/boot/vpnlogo.png';
+$dest_logofile = '/usr/local/wwwroot/sslvpn/resources/images/logo.png';
+if(file_exists($logofile)){
+	copy($logofile,$dest_logofile);
+}
+if($_POST['submit']=='webauthlogin'){
+	if($_POST['username']) $param['username'] = formatpost($_POST['username']);
+	if($_POST['password']) $param['password'] = formatpost($_POST['password']);
+	$showname = base64_decode($param['username']);
+	$param['username'] = bin2hex(urldecode($showname));
+	$param['password'] = bin2hex(base64_decode($param['password']));
+
+	$param['loginipaddr'] = $_SERVER['REMOTE_ADDR'];
+	$param['login_type'] = 2;
+	$rspString = getResponse( "webauthlogin", "show" , $param );
+	$result = $rspString[webauthlogin][group];
+	$result = (int)$result["result"];
+	if(!empty($result)){
+		$param['logintime'] = $rspString[webauthlogin][group]['login_time'];
+		$param['secret']  = $rspString[webauthlogin][group]['secret'];
+		$hb  = $rspString[webauthlogin][group]['heartbeat'];
+		$lifeTime = 24*3600*7;
+	    setcookie("user", $showname, time() + 3600,"/" );
+		$_SESSION[LOGINSTATE] = 'set';
+		//if(isset($_COOKIE["user"])){
+		echo '1';
+		//}else{
+	//	echo '2';
+	//	}
+		// echo $param['username'].'|'.$param['logintime'].'|'.$param['loginipaddr'].'|'.$param['secret'].'|'.$hb;
+	}else{
+	    setcookie("user","",time()-3600,"/");
+		echo '0#'.getCommonResource("sslvpn_error.checkwrong");
+	}
+	return;
+}
+?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<title></title>
+<!--                       CSS                       -->
+<!-- Reset Stylesheet -->
+<link rel="stylesheet" href="resources/css/reset.css" type="text/css" media="screen" />
+<!-- Main Stylesheet -->
+<link rel="stylesheet" href="resources/css/style.css" type="text/css" media="screen" />
+<!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
+<link rel="stylesheet" href="resources/css/invalid.css" type="text/css" media="screen" />
+<!--                       Javascripts                       -->
+<!-- jQuery -->
+<script type="text/javascript" src="resources/js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="resources/js/function.js"></script>
+</head>
+	<script>
+		function isCharIn(str, valid) {
+			var str = str.trim();
+			for (var i = 0; i < str.length; i += 1) {
+				for (var j = 0; j < valid.length; j += 1) {
+					if (str.charAt(i) == valid.charAt(j)) {
+						return true
+					}
+				}
+			}
+			return false;
+		}
+
+		function form_submit() {
+			var name_str = $("#name_cid").val(),
+				password_str = $("#password_cid").val();
+			var $error_notice = $(".error_notice"),
+				$error_notice_div = $(".error_notice div");
+				$error_notice.css("display", "block");
+			if (!!name_str == false) {
+				$error_notice_div.html("<?php echo getCommonResource("sslvpn_error.usernull");?>")
+				return false;
+			}
+
+			if (!!password_str == false) {
+				$error_notice_div.html("<?php echo getCommonResource("sslvpn.cant.empty");?>")
+				return false;
+			}
+			// var result = (isCharIn(password_str, '0123456789') && isCharIn(password_str, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') && isCharIn(password_str, '!@#$%&`,-.'));
+			// if (!result) {
+				// $error_notice_div.html("<?php //"密码不符合规则"; ?>");
+				// return false;
+			// }
+			$.ajax({
+				url : '/login.html',
+				type : 'POST',
+				data : 'username=' + window.btoa(encodeURI(name_str)) + '&password=' + window.btoa(password_str) + '&submit=webauthlogin',
+				async : false,
+				timeout : 30000,
+				success : function(data) {
+
+					if (data.indexOf('0#') > -1) {
+						var arr = data.split('#');
+						if (arr[1])
+							$error_notice_div.html(arr[1]);
+						else
+							$error_notice_div.html("<?php echo getCommonResource("sslvpn.username.psd.error");?>");
+						return false;
+					}else if(data == '1'){
+						window.location.href = "index.html"
+				//	}else if(data == '2'){
+				//		$error_notice_div.html("<?php  //'请开启cookie';?>");
+					}
+				}
+			});
+		};
+		document.onkeydown = function(evt){
+				if (undefined == evt) {
+						evt = window.event;
+				}
+				if (evt && evt.keyCode == 13){
+				 form_submit();
+				}else{
+			return ;
+				}
+		}
+	</script>
+	<style>
+		.error_notice {
+			display: none
+		}
+	</style>
+<body id="login">
+	<div id="login-wrapper" class="png_bg">
+		<div id="login-top">
+			<h1>Simpla Admin</h1>
+			<!-- Logo (221px width) -->
+			<a>
+				<img id="logo" src="resources/images/logo.png" alt="Simpla Admin logo" style="height: 90px;"/>
+			</a>
+		</div>
+		<!-- End #logn-top -->
+		<div id="login-content">
+			<form >
+				<div class="notification information png_bg error_notice" >
+					<div>
+						loading...
+					</div>
+				</div>
+				<p>
+					<label><?php echo getCommonResource("sslvpn.input.username");?></label>
+					<input class="text-input" id="name_cid" type="text" />
+				</p>
+				<div class="clear"></div>
+				<p>
+					<label><?php echo getCommonResource("sslvpn.input.password");?></label>
+					<input class="text-input" id="password_cid" type="password" />
+				</p>
+				<div class="clear"></div>
+				<p>
+					<input class="button" type="button" onclick="form_submit()"  value="<?php echo getCommonResource('sslvpn.btn.submit');?>" />
+				</p>
+			</form>
+		</div>
+		<!-- End #login-content -->
+	</div>
+	<!-- End #login-wrapper -->
+</body>
+</html>

@@ -1,0 +1,194 @@
+<?php
+/* if(!strstr($_SERVER['HTTP_HOST'],'8443')){
+	header('Location:/login.html');
+	break;
+} */
+require_once '../common/config.inc';
+require_once '../common/common.inc';
+require_once 'sslvpn_lang.php';
+$DEMO_DATA = 0;
+$rspString = getResponse( 'login_state_xml', "show" , $param, $demo_link='page_frame_timeout' );
+
+// print $rspString[login_state_xml][group][state]	
+if( !isset($_COOKIE["user"]) || $_GET['action'] == 'SignOut')
+{
+	webauthlogout();
+};
+
+function webauthlogout()
+{
+  $param['vsysid'] = $_SERVER['VSYSID'];
+  $rspString = getResponse( "webauthlogout", "mod" , $param );
+  setcookie("user", "",  time()- 3600,"/");
+  //header("Location:login.html");
+  echo "<script>window.top.location.href='login.html'</script>";
+  
+};
+function getTitle(){
+	$file = '/mnt/boot/vpn_oem.json';
+	if(file_exists($file)){
+		$content = file_get_contents($file); 
+		$json = json_decode($content,true);	
+		echo $json[0]['title'];
+	}else{
+		echo "";
+	}
+}
+function getContent(){
+	$file = '/mnt/boot/vpn_oem.json';
+	if(file_exists($file)){
+		$content = file_get_contents($file); 
+		$json = json_decode($content,true);	
+		echo $json[0]['content'];
+	}else{
+		echo " ";
+	}
+}
+?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<title><?php echo getTitle() ?></title>
+<!--                       CSS                       -->
+<!-- Reset Stylesheet -->
+<link rel="stylesheet" href="resources/css/reset.css" type="text/css" media="screen" />
+<!-- Main Stylesheet -->
+<link rel="stylesheet" href="resources/css/style.css" type="text/css" media="screen" />
+<!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
+<link rel="stylesheet" href="resources/css/invalid.css" type="text/css" media="screen" />
+<!--                       Javascripts                       -->
+<!-- jQuery -->
+<script type="text/javascript" src="resources/js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="resources/js/function.js"></script>
+
+<script>
+$(document).ready(function(){
+	$(".no-submenu").siblings("ul").css("display","none")
+	$(".nav-top-item").hover(
+		function(){
+			$(this).stop();
+			$(this).animate({paddingRight:"25px"},"fast")},
+		function(){
+			$(this).stop();
+			$(this).animate({paddingRight:"15px"},"fast")}
+		);
+	$(".nav-top-item").on("click",function(){
+			if($(this).siblings("ul").css("display") == "none"){
+						if($(this).hasClass("no-submenu")){
+							$(".no-submenu").siblings("ul").slideUp("fast")	
+						}
+				$(this).siblings("ul").slideDown("fast")
+				return;	
+				}else{
+				$(this).siblings("ul").slideUp("fast")
+				return;	
+				}
+								
+		})
+	$("#main-nav ul li").on("click",function(){
+			var tmp_c = $(this).parent("ul").parent("li").siblings("li").children("ul")
+			if($(this).parent("ul").siblings("a").hasClass("current")){
+				$(this).siblings("li").children("a").removeClass("current")	
+				tmp_c.slideUp("fast")
+			}else{
+				$("#main-nav").children("li").children("a").removeClass("current").addClass("no-submenu")
+				$(this).parent("ul").siblings("a").removeClass("no-submenu").addClass("current")
+				tmp_c.slideUp("fast")
+				tmp_c.find("a").removeClass("current")
+			}
+			$(this).children("a").addClass("current")						
+		})
+	$(document).scroll(function(){
+	
+	
+	if($(document).scrollTop() > $(window).height() +100  ){
+	$(".to_top").css("display","block")
+	
+	}else{
+	
+	$(".to_top").css("display","none")
+	}
+
+	
+   });	
+	
+	
+});
+
+function iFrameHeight() { 
+var ifm= document.getElementById("Main_con"); 
+ifm.height = 500;
+var subWeb = document.frames ? document.frames["Main_con"].document : ifm.contentDocument; 
+
+if(ifm != null && subWeb != null) { 
+ifm.height = subWeb.body.scrollHeight; 
+} 
+//document.getElementById("Main_con").style.height = 0px;
+} 
+
+</script>
+<body>
+<div id="body-wrapper">
+  <!-- Wrapper for the radial gradient background -->
+  <div id="sidebar">
+    <div id="sidebar-wrapper">
+      <!-- Sidebar with logo and menu -->
+      <h1 id="sidebar-title"><a href="#">Simpla Admin</a></h1>
+      <!-- Logo (221px wide) -->
+      <a id ="logo" style="background: url() no-repeat;height: 120px;
+display: block; line-height: 150px; padding-left: 30px; font-size: 30px;"  /><span style="color: #539D00;font-size: 24px;"><?php echo getCommonResource('sslvpn_title');?></span></a>
+      <div id="profile-links"> Hello, <a href="#" class="guestname"></a><?php isset($_COOKIE["user"]) ? print urldecode($_COOKIE["user"]) : print "guest" ?><a style="padding-left:20px" href="/index.html?action=SignOut" title="Sign Out" ><?php echo getCommonResource('sslvpn_logout');?></a> </div>
+      <ul id="main-nav">
+        <!-- Accordion Menu -->
+        <li> <a href="#" class="nav-top-item no-submenu">
+          <!-- Add the class "no-submenu" to menu items with no sub menu -->
+                   <?php echo getCommonResource('sslvpn_account');?> </a> 
+         <ul>
+            <li><a href="password.php" target="Main_con"><?php echo getCommonResource('sslvpn_changepsd');?> </a></li>
+          </ul>	
+        </li>
+        <li> <a href="#" class="nav-top-item current">
+          <!-- Add the class "current" to current menu item -->
+          VPN </a>
+          <ul>
+            <li><a class="current" href="download.php" target="Main_con"><?php echo getCommonResource('sslvpn_client_download');?></a></li>
+         <!--    <li><a href="configuration.php" target="Main_con" ><?php echo getCommonResource('sslvpn_config_download');?></a></li> -->
+          </ul>
+        </li>
+        <li> <a href="#" class="nav-top-item no-submenu ">
+          <!-- Add the class "current" to current menu item -->
+          	<?php echo getCommonResource('sslvpn_help');?> </a>
+          	<ul>
+
+          <li><a href="help.php" target="Main_con" ><?php echo getCommonResource('sslvpn_help_doc');?></a></li>
+          <li><a href="help_ipsec.php" target="Main_con" ><?php echo getCommonResource('ipsec_help_doc');?></a></li>
+          </ul>
+        </li>
+      </ul>
+      <!-- End #main-nav -->
+      
+    </div>
+  </div>
+  <!-- End #sidebar -->
+  <div id="main-content">
+  
+
+    <!-- Main Content Section with everything -->
+    <!-- Page Head -->
+    <!-- <h2></h2> -->
+    <img id="logo" src="resources/images/announcement.png" style="height: 30px;" />
+    <div style="font-size:14px;line-height:20px;">
+		<?php echo getContent() ?>
+    </div>		  
+    
+<iframe src="download.php" name="Main_con" id="Main_con" width="100%"  onload="iFrameHeight()" scrolling="no" frameborder="0" allowTransparency="true" >
+</iframe>	
+    
+  <a href="#logo"><div class="to_top"></div></a>
+  <!-- End #main-content -->
+</div>
+</body>
+<!-- Download From www.exet.tk-->
+</html>

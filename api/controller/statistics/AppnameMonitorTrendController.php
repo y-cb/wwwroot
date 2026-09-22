@@ -1,0 +1,100 @@
+<?php
+namespace controller\statistics;
+use controller\mController;
+use database\AppflowDb;
+
+/**
+ * @api {GET}  /api/appname-monitor-trend 获取应用对象流量统计
+ * @apiName appname-monitor-trend
+ * @apiGroup 应用对象流量统计
+ *
+ *
+ * @apiParam {Number} range 1代表最近1小时，2代表最近1天，3代表最近1周
+ * @apiParam {String} direct “up”代表上行，“down”代表下行，“total”代表双向，“all”代表前三种
+ *
+ * @apiParamExample {json} Request-Example:
+ *	{
+ *		"range": "1",
+ *		"direct": "all"
+ *	}
+ *
+ * @apiSuccess {Number} start_time 统计结果截止时间
+ * @apiSuccess {Array} items 应用统计数组
+ * @apiSuccess {String} name 应用名称
+ * @apiSuccess {String} name_cn 应用名称对应中文
+ * @apiSuccess {String} up_bytes 上行流量
+ * @apiSuccess {String} down_bytes 下行流量
+ * @apiSuccess {String} total_bytes 总流量
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *	HTTP/1.1 200 OK
+ *	{
+ *		"data":,
+ *		{
+ *			"start_time"："1525795740",
+ *			"items": [
+ *			{
+ *              "name": "http",
+ *              "name_cn": "HTTP-网页浏览",
+ *              "up_bytes": "1640,1492,1514,1670,1760,1604,1351,1588,1741,1614,1072,1258,2037,1488,1664,1680,1600,1315,1725,1686,1460,1547,1610,1639,1780,1480,1615,1085,1346,1572,1671,1741,1455,1726,1696,1422,1664,1463,1833,1257,1352,1572,1630,1612,1472,1637,10051,3823,1033,1206,1025,776,950,1363,1207,1198,1049,1199,751,1646",
+ *              "down_bytes": "9837,11103,8973,10125,11542,8515,9843,8741,9680,10077,7883,7342,15353,8696,11783,10085,8976,7515,9642,10504,10320,9351,10815,11218,12000,8962,10106,6256,6881,10373,9760,12383,8485,9117,11347,8750,12339,7491,11091,7947,9850,9645,9939,9886,9477,8760,288811,86975,3350,4647,3477,3798,3316,4219,4236,4088,3323,6311,3152,13067",
+ *              "total_bytes": "11478,12596,10488,11796,13303,10120,11194,10330,11422,11691,8955,8600,17391,10184,13448,11765,10576,8830,11368,12190,11780,10899,12426,12858,13780,10443,11722,7341,8228,11945,11431,14125,9940,10844,13043,10173,14003,8955,12925,9204,11202,11217,11569,11499,10949,10397,298863,90799,4383,5853,4502,4574,4266,5582,5443,5286,4372,7510,3904,14713"
+ *          }, 
+ *			{
+ *              "name": "dns",
+ *              "name_cn": "DNS",
+ *              "up_bytes": "107,20,20,20,350,41,350,20,20,350,330,20,20,20,20,330,20,350,20,20,20,20,20,20,330,20,20,62,20,41,309,20,20,20,20,243,107,20,20,62,243,149,20,20,41,532,107,41,309,20,20,20,20,20,20,20,41,41,62,309",
+ *              "down_bytes": "35,84,88,84,84,,84,84,84,88,88,84,88,84,88,78,78,88,78,78,78,78,78,78,78,88,88,,88,35,162,109,109,109,109,88,88,88,88,,88,,88,88,35,105,124,,88,88,88,88,88,88,88,78,88,,,78",
+ *              "total_bytes": "143,104,109,104,435,41,435,104,104,439,418,104,109,104,109,408,99,439,99,99,99,99,99,99,408,109,109,62,109,77,472,130,130,130,130,332,196,109,109,62,332,149,109,109,77,637,232,41,398,109,109,109,109,109,109,99,130,41,62,387"
+ *          }, 
+ *			{
+ *              "name": "tcp",
+ *              "name_cn": "TCP",
+ *              "up_bytes": "18,9,18,9,52,41,18,9,36,,28,73,42,9,9,,18,18,9,62,9,28,70,18,26,9,18,9,38,128,9,18,9,36,29,25,19,43,18,38,50,,18,9,18,16,102,17,33,18,9,18,19,18,35,35,8,58,26,33",
+ *              "down_bytes": "8,8,8,,16,25,,8,16,,,50,24,8,8,,8,,8,24,8,8,33,8,8,8,8,,8,49,8,8,8,16,8,17,8,24,8,,50,,8,8,,8,24,,24,8,8,8,8,8,16,16,,25,8,8",
+ *              "total_bytes": "26,17,26,9,68,67,18,17,53,,28,123,67,17,17,,26,18,17,87,17,36,104,26,35,17,26,9,46,177,17,26,17,53,37,43,27,68,26,38,101,,26,17,18,25,126,17,58,26,17,26,27,26,52,51,8,84,35,42"
+ *          }
+ *		]
+ *		}
+ *	}
+ */
+
+class AppnameMonitorTrendController extends mController {	
+	public $module = 'monitor_apps_trend';
+/*	function get(){
+		$data = array();
+		$param = get_inputs();
+		header('Content-type: application/json');
+		$rspString = getResponse($this->module, "showone" ,$param);
+		$monitor_apps_detail_arr = getAssign($rspString,$this->module,1);
+		if(!$monitor_apps_detail_arr[user_items]){
+			$monitor_apps_detail_arr[user_items] = '{}';
+		}
+		echo json_encode($monitor_apps_detail_arr);
+	}*/
+	function get(){
+		$data = array();
+		$param = get_inputs();
+
+		if ($param['range'] == '1'){
+			$num = 60;
+		} else if ($param['range'] == '2') { 
+			$num = 144;
+		} else if ($param['range'] == '3') {
+			$num = 168;
+		}
+
+		$data = AppMonitorController::get_db_config($num);
+		$db_name = $data['file_path'];
+		$db = new AppflowDb();
+		$db->dbname = '/tmp/result.db';
+		/*if(file_exists('/mnt1/mysql/')) {
+			$path = '/mnt1/flow_statistic/'.$data['file_path'].'/';
+		} else {
+			$path = '/var/mem_db/flow_statistic/'.$data['file_path'].'/';
+		}*/
+		$path='/tmp/flow_statistic/'.$data['file_path'].'/';
+		$data = $db->app_detail_query($data['data'], $path, $param, true);
+		echo json_encode($data);
+	}
+}

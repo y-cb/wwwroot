@@ -1,0 +1,1111 @@
+<?php
+require_once 'auth_lang.php';
+$lang = get_sys_language();
+if($lang=='en'){
+	echo '<link href="./css/cover_webauth_en.css" rel="stylesheet" type="text/css">';
+}
+else{
+	echo '<link href="./css/cover_webauth.css" rel="stylesheet" type="text/css">';
+}
+//测试需求，文件不存在，则显示验证码
+$isCaptcha = !file_exists('/tmp/test_webauth');
+$onlyLanguage = file_exists('/etc/sys_lang');
+function randomNum(){
+	$str = 'abcdefghijklmnopqrstuvwsyz0123456789';
+	$max = strlen($str) - 1;
+	for ($i = 1; $i <= 16; $i++) {
+		$rstr .= $str[mt_rand(0, $max)];
+	}
+	return $rstr;
+}
+if (!$_SESSION['randomkey']) {
+	$_SESSION['randomkey'] = randomNum();
+}
+if (!$_SESSION['token']) {
+	$_SESSION['token'] = randomNum();
+}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="viewport" http-equiv="Content-Type" charset="utf-8" content="width=device-width, initial-scale=1" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+<title><?php echo getCommonResource('auth.safety.certification');?></title>
+<script src="./js/jquery-3.6.3.min.js" type="text/javascript"></script>
+<script src="./js/web_auth.js" type="text/javascript"></script>
+<script src="./js/crypto-js.js"></script>
+<script src="./js/aes.js"></script>
+<script src="./js/pad-zeropadding.js"></script>
+<script src="./js/oem.js"></script><!--  4.1发布后做oem客制化-->
+<script src="./js/wxLogin.js"></script>
+<!-- <link href="./css/cover_webauth.css?v=2.0" rel="stylesheet" type="text/css" /> -->
+
+<link href="./css/style.css" rel="stylesheet" type="text/css">
+<link href='./css/bootstrap.min.css' rel="stylesheet"/>
+<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+/*window.open("red.htm", "red", "resizable=yes,width=500,height=300");
+window.close();*/
+var isCaptcha = 1;//验证码开关，默认开
+$(function(){
+	var web_title_cn = "认证登录";
+	var web_title_en = "Authentication Login";
+	var is_mobi = is_mobile();
+	var lang = "<?php echo $lang;?>";
+	if(lang=='cn'){
+		if(AUTH_CN){
+			web_title_cn = AUTH_CN;
+		}
+		$('.web_title').html(web_title_cn);
+	}else{
+		if(AUTH_EN){
+			web_title_en = AUTH_EN;
+		}
+		$('.web_title').html(web_title_en);
+	}//4.1发布后做oem客制化
+	if(is_mobi && window.location.search.indexOf("mv=fp")<0){
+		$('.center').attr('id','center_mobile');
+	}else
+		$('.center').attr('id','center');
+})
+
+function aes_encrypt(data){
+	var random_str = "<?php echo $_SESSION['randomkey'];?>";
+	var key = CryptoJS.enc.Latin1.parse(random_str);
+	var iv = CryptoJS.enc.Latin1.parse(random_str);
+	var encrypted = CryptoJS.AES.encrypt(data,key,{iv:iv,mode:CryptoJS.mode.CBC,padding:CryptoJS.pad.ZeroPadding});
+	return encrypted.toString();
+}
+
+function form_submit() {
+	var username = $('#auth_name').val();
+	var password = $('#auth_pwd').val();
+
+	var captcha = '';
+	if (isCaptcha){
+		captcha = $('#auth_valid').val();
+	}
+	/*<?php if ($isCaptcha){ ?>
+		captcha = $('#auth_valid').val();
+	<?php } ?>*/
+
+ 	var token = $('#auth_token').val();
+	var msg1="<?php echo getCommonResource('auth.safety.notemptyusername');?>";
+	var msg2="<?php echo getCommonResource('auth.safety.notintherangeusername');?>";
+	var msg3="<?php echo getCommonResource('auth.safety.correctusername');?>";
+	var msg4="<?php echo getCommonResource('auth.safety.notemptypassword');?>";
+	var msg5="<?php echo getCommonResource('auth.safety.incorrectusernameorpass');?>";
+	var msg6="<?php echo getCommonResource('auth.safety.authtips');?>";
+	var msg7= "<?php echo getCommonResource('check_num_empty');?>";
+	var msg8= "<?php echo getCommonResource('check_num_error');?>";
+	// var msg7="<?php echo getCommonResource('auth.safety.notemptyusername');?>";
+	// var msg8="<?php echo getCommonResource('auth.safety.notemptyusername');?>";
+	// var msg9="<?php echo getCommonResource('auth.safety.notemptyusername');?>";
+	// var msg10="<?php echo getCommonResource('auth.safety.notemptyusername');?>";
+	if ( !! username == false) {
+		$("#error").html(msg1);
+		$('#auth_name').focus();
+		changeNum();
+		return false;
+	}
+	if (getStringByteLength(username) < 1 || getStringByteLength(username) > 64) {
+		$("#error").html(msg2);
+		$('#auth_name').focus();
+		changeNum();
+		return false;
+	}
+	/*if (/[\%\"\#\$\`\*\+,\/:;\<\=<>\?\\\^\'\{\}\!\s]/.test(username)) {
+	//if (/[\\\'\"\<\>\+\?\#\&\s]/.test(username)) {
+		$("#error").html(msg3);
+		$('#auth_name').focus();
+		changeNum();
+		return false;
+	}*/
+	if ( !! password == false) {
+		$("#error").html(msg4);
+		$('#auth_pwd').focus();
+		changeNum();
+		return false;
+	}
+	if (getStringByteLength(password) < 1 || getStringByteLength(password) > 63) {
+		$("#error").html("<?php echo getCommonResource('auth.safety.password'); ?>");
+		$('#auth_pwd').focus();
+		changeNum();
+		return false;
+	}
+	if(isCaptcha==1){
+		if(captcha.length==0) {
+			$("#error").html(msg7);
+			$('#auth_valid').focus();
+			changeNum();
+			return false;
+		}
+	}
+	/*<?php if ($isCaptcha){ ?>
+		if(captcha.length==0) {
+			$("#error").html(msg7);
+			$('#auth_valid').focus();
+			return false;
+		}
+	<?php } ?>*/
+	/*防止特殊字符加密后被转译，提前base64*/
+	username = window.btoa(encodeURI(username));
+	password = window.btoa(password);
+
+	var usr = aes_encrypt(username);
+	var pwd = aes_encrypt(password);
+  	var token1 = aes_encrypt(token);
+  	var jsonstr = JSON.stringify({username: usr,password: pwd,validate: captcha,token: token1});
+  	var data = window.btoa(jsonstr);		//base64编码，ie10+支持
+	$.ajax({
+		url: 'auth_submit.php?act=webauthlogin&t=' + Math.random(),
+		type: 'POST',
+		data: {data: data},
+		async: false,
+		timeout: 30000,
+		success: function(data) {
+			var weburl = decodeURIComponent(get_weburl()),logincookie= '';
+			if (data.indexOf('0#') > -1) {
+				var arr = data.split('#');
+				if(arr[1]=='check_num_error'){
+					$("#error").html(msg8);
+					//alert(msg8);
+				} else{
+					$("#error").html(arr[1]);
+					//alert(msg5);
+				}
+				changeNum();
+				return false;
+			} else {
+				var arr = data.split('&');
+				let bname = arr[0];
+				arr[0] = window.atob(arr[0]);
+				$('.login_success_div').show();
+				$('#keepalive_Prompt').html(msg6);
+				if(arr[6]=='0'){
+					$('#mod_password').hide();
+					// $('#modify_pass').attr('disabled','true')
+				}
+				$('.login_div').hide();
+				arr[0] = decodeURIComponent(arr[0]);
+				if (arr[0].length>10) {
+					$('#login_username').attr('title', arr[0]);
+					arr[0] = arr[0].substr(0,10);
+					arr[0] += '...';
+				}
+
+				$('#login_username').html(arr[0]);
+				$('#login_time').html(arr[1]);
+				$('#login_ip').html(arr[2]);
+				$('#login_duration_timer').val(0);
+
+				logincookie = '{"username":"' + bname + '","loginipaddr":"' + arr[2] + '","logintime":"' + arr[1] + '","secret":"' + arr[3] + '","logintype":"webauth"}';
+				setCookie('logincookie', logincookie);
+				var time = arr[4];
+				if (time > 0) {
+					time = parseInt(time) * 1000;
+					setTimeout('webauthkeepalive_fun(\'' + arr[0] + '\',\'' + arr[3] + '\')', time);
+				}
+				if(weburl){
+					btn_win_open(weburl);
+				}
+				setSecondInterval();
+			}
+		}
+	});
+}
+function btn_win_open(url){
+	var redirect = "<a href="+url+" target=\"_blank\" class=\"redirect\" style=\"display:none;\" onclick=window.open('"+url+"')>redirect</a>";
+	$("body").prepend(redirect);
+	$(".redirect").trigger("click");
+}
+function login_out() {
+	var jsonobj = getCookieData();
+	var mobile,vldcode,data,obj,vld;
+
+	if (jsonobj.logintype == 'webauth') {
+		data = 'submit=webauthloginout';
+	} else if(jsonobj.logintype == 'message') {
+		data = 'submit=webmsgloginout';
+		obj = $('input[name=mobile]');
+		mobile = obj.val();
+		vld = $('input[name=vldcode]');
+		vldcode = vld.val();
+	} else if(jsonobj.logintype == 'free_webauth'){
+		data = 'submit=freewebauthloginout';
+	} else if(jsonobj.logintype === 'wechat-webauth') {
+		$.ajax({
+			url: '/wechat_webauth.php?api=wechat_signout',
+			datatype: 'JSON',
+			type: 'POST',
+			success: function (res) { window.location.href = res; },
+		})
+		return false;
+	}
+	$.ajax({
+		url: 'authweb_success.php',
+		type: 'POST',
+		data: data,
+		async: false,
+		timeout: 30000,
+		success: function(data) {
+			if (jsonobj.logintype == 'webauth') {
+				$('#auth_name').val('');
+				$('#auth_pwd').val('');
+				if (get_weburl()) location.href = '/?weburl=' + get_weburl();
+				else location.href = '/';
+
+			} else if(jsonobj.logintype == 'message') {
+				obj.val('');
+				vld.val('');
+				location.href = '/?type=sms-webauth';
+			} else if(jsonobj.logintype == 'free_webauth') {
+				location.href = '/?type=free-webauth';
+			}
+
+		}
+	});
+}
+function changeNum() {
+	var timestamp = new Date().getTime();
+	document.getElementById('pic').src = "/checknum_creat.php?module=web_checknum&time=" + timestamp;
+}
+function getCheckNum() {
+	$.ajax({
+		url: 'auth_submit.php?act=get_cheknum_show&t=' + Math.random(),
+		type: 'GET',
+		dataType: 'json',
+		async: false,
+		timeout: 30000,
+		success: function(data) {
+			isCaptcha = data
+		}
+	})
+}
+function change_mix_type(val){
+	var param = get_param();
+	switch(val){
+		case 'mix_local':
+			location.href = '/';
+			break;
+		case 'mix_sms':
+			location.href = '/?type=sms-webauth';
+			break;
+		case 'mix_qrcode':
+			location.href = '/qrcode_auth.html?ip='+param.ip+'&t='+param.t;
+			break;
+		case 'mix_free':
+			location.href = '/?type=free-webauth';
+			break;
+		case 'mix_wechat':
+			location.href = '/?type=wechat-webauth';
+			break;
+
+	}
+}
+//----------------keeep alive---------------
+function webauthkeepalive_fun(username, secret) {
+	username = window.btoa(username);
+	var msg6="<?php echo getCommonResource('auth.safety.authtips');?>";
+	var jsonobj = getCookieData();
+	$.ajax({
+		url: 'auth_submit.php?act=keepalive&t=' + Math.random(),
+		type: 'POST',
+		data: 'username=' + encodeURI(username) + '&userip=' + jsonobj.loginipaddr + '&secret=' + secret,
+		timeout: 30000,
+		async: false,
+		error: ajaxErrorLoad,
+		success: function(data) {
+			var sh = '';
+			if (data.indexOf('0#') > -1) {
+				$('.login_success_div').hide();
+				$('.login_div').show();
+				clearTimeout(sh);
+				window.location.reload();
+			} else {
+				var arr = data.split('&');
+				var time = arr[4];
+				let trueName = window.atob(arr[0]);
+
+				time = parseInt(time) * 1000;
+				if (time > 0) {
+					var sh = setTimeout('webauthkeepalive_fun(\'' + trueName + '\',\'' + arr[3] + '\')', time);
+					// $('#keepalive_Prompt').html(msg6);
+				}
+				else {
+					// $('#keepalive_Prompt').html('');
+				}
+				$('.login_success_div').show();
+
+				$('.login_div').hide();
+
+				trueName = decodeURIComponent(trueName);
+
+				if (trueName.length>10) {
+					$('#login_username').attr('title', trueName);
+					trueName = trueName.substr(0,10);
+					trueName += '...';
+				}
+
+				$('#login_username').html(trueName);
+				$('#login_time').html(arr[1]);
+				$('#login_ip').html(arr[2]);
+				if(arr[6]=='0'){
+					$('#mod_password').hide();
+				}
+				if (arr[5]) {
+					$('#login_duration').html(time_To_hhmmss(parseInt(arr[5])));
+					$('#login_duration_timer').val(arr[5]);
+					$('#keepalive_Prompt').html(msg6);
+				}else{
+					$('#keepalive_Prompt').html('');
+				}
+			}
+		}
+	});
+}
+//----------------message keeep alive---------------
+function msgauthkeepalive_fun() {
+	var jsonobj = getCookieData();
+	$.ajax({
+		url: 'auth_submit.php?act=msgkeepalive&t=' + Math.random(),
+		type: 'POST',
+		data: 'name=' + encodeURI(jsonobj.username) + '&ip=' + jsonobj.loginipaddr,
+		timeout: 30000,
+		async: false,
+		error: ajaxErrorLoad,
+		success: function(data) {
+			$('#login_duration').html('0');
+			var sh = '';
+			if (data.indexOf('0#') > -1) {
+				clearTimeout(sh);
+				$('.login_success_div').hide();
+				$('.login_div').show();
+				var obj = $('input[name=mobile]');
+				obj.val('');
+				var vld = $('input[name=vldcode]');
+				vld.val('');
+
+				$("#mobile_msg").text("<?php echo getCommonResource('auth.input.getverifynum');?>");
+				$("#mobile_msg").attr('onclick','get_mobile_vlcode(this);');
+				window.location.reload();
+			} else {
+				$('.login_div').hide();
+				var arr = data.split('&');
+				sh = setTimeout('msgauthkeepalive_fun()', 30 * 1000);
+
+				$('.login_success_div').show();
+				$('#login_username').html(arr[0]);
+				$('#login_time').html(arr[1]);
+				$('#login_ip').html(arr[2]);
+				$('#mod_password').hide();
+				if (arr[3]) {
+					$('#login_duration').html(time_To_hhmmss(parseInt(arr[3])));
+					$('#login_duration_timer').val(arr[3]);
+					// $('#keepalive_Prompt').html(msg6);
+				}else{
+					$('#keepalive_Prompt').html('');
+				}
+			}
+		}
+	});
+}
+//---------------- free keep alive---------------
+function free_webauthkeepalive_fun(username, secret) {
+	var msg6="<?php echo getCommonResource('auth.safety.authtips');?>";
+	var jsonobj = getCookieData();
+	$.ajax({
+		url: 'auth_submit.php?act=freekeepalive&t=' + Math.random(),
+		type: 'POST',
+		data: 'username=' + encodeURI(username) + '&userip=' + jsonobj.loginipaddr + '&secret=' + secret,
+		timeout: 30000,
+		async: false,
+		error: ajaxErrorLoad,
+		success: function(data) {
+			$('#login_duration').html('0');
+			var sh = '';
+			if (data.indexOf('0#') > -1) {
+				clearTimeout(sh);
+				$('.login_success_div').hide();
+				$('.login_div').show();
+				window.location.reload();
+			} else {
+				$('.login_div').hide();
+				var arr = data.split('&');
+				sh = setTimeout('free_webauthkeepalive_fun()', 30 * 1000);
+				$('.login_success_div').show();
+				$('#login_username').html(arr[0]);
+				$('#login_time').html(arr[1]);
+				$('#login_ip').html(arr[2]);
+				$('#mod_password').hide();
+				if (arr[3]) {
+					$('#login_duration').html(time_To_hhmmss(parseInt(arr[3])));
+					$('#login_duration_timer').val(arr[3]);
+					// $('#keepalive_Prompt').html(msg6);
+				}else{
+					$('#keepalive_Prompt').html('');
+				}
+			}
+		}
+	});
+}
+
+//---------------- wechat keep alive---------------
+function wechatauthkeepalive_fun(jsonObj) {
+
+	if(!jsonObj.username || !jsonObj.loginipaddr) {
+		return false;
+	}
+
+	$('[name=mod_pass]').hide();
+
+	$.ajax({
+		url: 'wechat_webauth.php?api=keep_alive',
+		type: 'POST',
+		datatype: 'JSON',
+		data: {
+			name: jsonObj.username,
+			ip: jsonObj.loginipaddr
+		},
+		success: function (res) {
+
+			res = JSON.parse(res);
+
+			if(res.result === '1') {
+
+				setTimeout('wechatauthkeepalive_fun(getCookieData())', 30 * 1000);
+
+				$('.login_success_div').show();
+				$('.login_div').hide();
+				$('#login_username').html(res.name);
+				$('#login_time').html(res.login_time);
+				$('#login_ip').html(res.ip);
+				$('#mod_password').hide();
+
+				if(res.online_time) {
+					$('#login_duration').html(time_To_hhmmss(res.online_time));
+					$('#login_duration_timer').val(res.online_time);
+				}else {
+					$('#keepalive_Prompt').html('');
+				}
+
+			}else {
+
+				window.location.reload();
+
+				$('.login_success_div').hide();
+				$('.login_div').show();
+				$('#mod_password').show();
+			}
+		},
+	});
+}
+
+document.onkeydown = function(evt){
+	if (undefined == evt) {
+		evt = window.event;
+	}
+	if(evt.keyCode == 123) {
+        // alert('屏蔽F12');
+         return false;
+         //屏蔽Ctrl+Shift+I
+    } else if((evt.ctrlKey) && (evt.shiftKey) && (evt.keyCode == 73)) {
+         //alert('友情提醒您，本网站禁止审查元素');
+         return false;
+         //屏蔽Shift+F10
+    } else if((evt.shiftKey) && (evt.keyCode == 121)){
+         //alert('本网站禁止审查元素！');
+
+         return false;
+
+    } else if(evt.ctrlKey  &&  evt.keyCode==83 ){
+         //alert('本网站禁止保存文件！');
+         return false;
+    }
+	if (evt && evt.keyCode == 13)
+		form_submit();
+}
+function ajaxErrorLoad(mod){
+	var jsonobj = getCookieData();
+	if(jsonobj){
+		setTimeout('webauthkeepalive_fun(\''+jsonobj.username+'\',\''+jsonobj.secret+'\')',2000);
+	}
+}
+$(function(){
+	$('#mod_password').click(function(){
+		window.location.href = 'auth_changepwd.html?weburl='+get_weburl();
+	});
+	changeNum();
+	getCheckNum();
+});
+
+</script>
+</head>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false" style="background-color:#F5F5F5;">
+<div style="padding:0;margin:0;width:100%;height:100%;">
+		<!--mix-webauth div-->
+	<div class="logo_show"></div>
+	<div id="mix_webauth_info" class="login_div" style="display:none;">
+		<div id="mix_webauth" class="center">
+			<div class="web_title"></div>
+			<p id="mix_webauth_error" style="margin-top:12px;"></p>
+			<div style="padding: 30px 0 0 50px;"><?php echo getCommonResource('auth.mix.chose.type');?></div>
+			<div style="margin-left: 50px;" id="mix_img_div">
+				<div id="mix_local" class="mix_div" title="<?php echo getCommonResource('auth.mix.local');?>" onclick="change_mix_type('mix_local')"><img src="./images/mix_local.png"/></div>
+				<div id="mix_sms" class="mix_div" title="<?php echo getCommonResource('auth.mix.sms');?>" onclick="change_mix_type('mix_sms')"><img src="./images/mix_sms.png"/></div>
+				<div id="mix_qrcode" class="mix_div" title="<?php echo getCommonResource('auth.mix.qrcode');?>" onclick="change_mix_type('mix_qrcode')"><img src="./images/mix_qrcode.png"/></div>
+				<div id="mix_free" class="mix_div" title="<?php echo getCommonResource('auth.mix.free');?>" onclick="change_mix_type('mix_free')"><img src="./images/mix_free.png"/></div>
+				<div id="mix_wechat" class="mix_div" title="<?php echo getCommonResource('auth.mix.wechat');?>" onclick="change_mix_type('mix_wechat')"><img src="./images/mix_wechat.png"/></div>
+			</div>
+			<span></span>
+		</div>
+	</div>
+	<!--local auth div-->
+	<div id="info" class="login_div">
+		<div id="center" class="center">
+			<div class="web_title"></div>
+			<p id="error" style="margin-top:10px;"></p><!--  4.1发布后oem客制化 -->
+			<form id="authlogin" name="authlogin" method="post" action="/">
+				<table border="0" cellspacing="0" cellpadding="0" class="info">
+					<tr>
+						<td width="80"><?php echo getCommonResource('auth.input.username');?></td>
+						<td colspan="2"><input name="auth_name" id="auth_name" placeholder="" title="" maxlength="127" type="text" class="admin_text" value=""/></td>
+					<tr>
+						<td width="50"><?php echo getCommonResource('auth.input.password');?></td>
+						<td colspan="2"><input name="auth_pwd" id="auth_pwd" placeholder="" title="" type="password" class="admin_text" value=""/></td>
+					</tr>
+					<tr id="language_cid">
+						<td width="50"><?php echo getCommonResource('auth.input.lang');?></td>
+						<td colspan="2"><select name="auth_lang" id="auth_lang" onChange="setLanguage(this.value)">
+							<option value="1" <? echo ($lang == 'cn')? 'selected' : '';?>><?php echo getCommonResource('sys_language_zh');?></option>
+							<option value="2" <? echo ($lang == 'en')? 'selected' : '';?>><?php echo getCommonResource('sys_language_en');?></option>
+						</select></td>
+					</tr>
+					<tr id="captcha_tr">
+						<td width="50"><?php echo getCommonResource('verify_num');?></td>
+						<td colspan="2"><input name="auth_valid" id="auth_valid" type="text" class="admin_text" maxlength="4" placeholder="" required style="width: 145px"/>
+							<a href="#" onClick="changeNum();" id="res4"><?php echo getCommonResource('login_changenum');?>
+							  <img src="" id="pic"/>
+							</a>
+						</td>
+					</tr>
+
+					<input name="auth_token" id="auth_token" type="hidden" class="admin_text" placeholder="" value="<?php echo $_SESSION['token']; ?>" required style="width: 145px"/>
+					<tr>
+						<td width="50">&nbsp;</td>
+						<td colspan="2"><input name="auth_login" type="button" title="" value="<?php echo getCommonResource('auth.btn.submit');?>" class="input_submit" style="margin-left: 35px;" onclick="return form_submit();"/></td>
+					</tr>
+
+				</table>
+			</form>
+			<span></span>
+		</div>
+	</div>
+	<!--messgae div-->
+	<div id="msg_info" class="login_div" style="display:none;">
+		<div id="msg_center" class="center">
+			<div class="web_title"></div>
+			<p id="msg_error" style="margin-top:12px;"></p>
+			<form id="msg_authlogin" name="authlogin" method="post" action="/">
+				<table border="0" cellspacing="0" cellpadding="0" class="info" style="border-collapse:separate; border-spacing:0px 10px;top:60px">
+					<tr id="mobilelogin_tb1">
+						<td width="60"><?php echo getCommonResource('auth.input.moblie');?></td>
+						<td colspan="2"><input name="mobile" placeholder="" title="" maxlength="11" type="text" class="admin_text" value="" style="width:120px;"/> <a href="javascript:;" onclick="get_mobile_vlcode(this);" id="mobile_msg"></a></td>
+					</tr>
+					<tr id="mobilelogin_tb2">
+						<td width="60"><?php echo getCommonResource('verify_num');?></td>
+						<td colspan="2"><input name="vldcode" placeholder="" title="" type="text" maxlength="6" class="admin_text" value="" style="width:80px;"/></td>
+					</tr>
+
+					<tr id="language_cid">
+						<td width="50"><?php echo getCommonResource('auth.input.lang');?></td>
+						<td colspan="2"><select name="language" id="language" onChange="setLanguage(this.value)">
+							<option value="1" <? echo ($lang == 'cn')? 'selected' : '';?>><?php echo getCommonResource('sys_language_zh');?></option>
+							<option value="2" <? echo ($lang == 'en')? 'selected' : '';?>><?php echo getCommonResource('sys_language_en');?></option>
+						</select></td>
+					</tr>
+					<input name="token" id="token" type="hidden" class="admin_text" placeholder="" value="<?php echo $_SESSION['token']; ?>" required style="width: 145px"/>
+					<tr id="submit_cid">
+						<td width="50">&nbsp;</td>
+						<td colspan="2"><input name="add_new" type="button" title="" value="<?php echo getCommonResource('auth.btn.submit');?>" class="input_submit" style="margin-left: 35px;" onclick="return msg_form_submit();"/></td>
+					</tr>
+
+				</table>
+			</form>
+			<span></span>
+		</div>
+	</div>
+
+	<!--wechat login auth-->
+	<div id="wechat_info" class="login_div" style="text-align:center; display:none;">
+
+		<div class="center" style="max-height:420px;width: auto;">
+			<form id="authlogin" name="authlogin" method="post" action="/">
+
+				<div id="wechat_login_qrcode" style="transform:scale(.8); padding:28px 0 0 0;">
+					<b class="no-cnf" style="display:none;font-size:128px;margin:70px 0 0 0;">&#9940;</b>
+					<h6 class="no-cnf" style="display:none;font-size:18px;"><?php echo getCommonResource('auth.wechat.nocnf'); ?></h6>
+				</div>
+
+				<table border="0" cellspacing="0" cellpadding="0" class="info" style="border-collapse:separate; border-spacing:0 10px;top:12px">
+					<tr id="language_cid">
+						<td width="50"><?php echo getCommonResource('auth.input.lang');?></td>
+						<td colspan="2"><select name="language" id="language" onChange="setLanguage(this.value)">
+							<option value="1" <? echo ($lang == 'cn')? 'selected' : '';?>><?php echo getCommonResource('sys_language_zh');?></option>
+							<option value="2" <? echo ($lang == 'en')? 'selected' : '';?>><?php echo getCommonResource('sys_language_en');?></option>
+						</select></td>
+					</tr>
+					<input name="token" id="token" type="hidden" class="admin_text" placeholder="" value="<?php echo $_SESSION['token']; ?>" required style="width: 145px"/>
+				</table>
+			</form>
+			<span></span>
+		</div>
+	</div>
+
+		<!--free-webauth div-->
+	<div id="free_webauth_info" class="login_div" style="display:none;">
+		<div id="free_webauth" class="center">
+			<div class="web_title"></div>
+			<p id="free_webauth_error" style="margin-top:12px;"></p>
+			<form id="free_webauth_login" name="authlogin" method="post" action="/">
+				<table border="0" cellspacing="0" cellpadding="0" class="info" style="border-collapse:separate; border-spacing:0px 10px;top:60px">
+					<tr id="language_cid">
+						<td width="50"><?php echo getCommonResource('auth.input.lang');?></td>
+						<td colspan="2"><select name="language" id="language" onChange="setLanguage(this.value)">
+							<option value="1" <? echo ($lang == 'cn')? 'selected' : '';?>><?php echo getCommonResource('sys_language_zh');?></option>
+							<option value="2" <? echo ($lang == 'en')? 'selected' : '';?>><?php echo getCommonResource('sys_language_en');?></option>
+						</select></td>
+					</tr>
+					<input name="token" id="token" type="hidden" class="admin_text" placeholder="" value="<?php echo $_SESSION['token']; ?>" required style="width: 145px"/>
+					<tr id="submit_cid">
+						<td width="50">&nbsp;</td>
+						<td colspan="2"><input name="add_new" type="button" title="" value="<?php echo getCommonResource('auth.btn.submit');?>" class="input_submit" onclick="return free_webauth_form_submit();"/></td>
+					</tr>
+
+				</table>
+			</form>
+			<span></span>
+		</div>
+	</div>
+
+	<div id="info" class="login_success_div" style="display:none;">
+		<div id="center" class="center">
+		<div class="web_title"></div>
+		<form id="authlogin1" name="authlogin1" method="post" action="/">
+		<table border="0" cellspacing="0" cellpadding="0" class="info" style="width:300px;top:40px;">
+		  <tr>
+		    <td colspan="4" style="color:red;font-size:10px;" id="keepalive_Prompt"></td>
+		  </tr>
+		  <tr>
+		    <td width="80" style="line-height:25px;text-align:right;"><?php echo getCommonResource('auth.safety.loginname');?></td>
+		    <td colspan="3" style="padding-left:20px;" id="login_username"></td>
+		  </tr>
+		  <tr>
+		    <td width="80" style="line-height:25px;text-align:right;"><?php echo getCommonResource('auth.safety.loginip');?></td>
+		    <td colspan="3" style="padding-left:20px;" id="login_ip"></td>
+		  </tr>
+		   <tr>
+		    <td width="80" style="line-height:25px;text-align:right;"><?php echo getCommonResource('auth.safety.logintiem');?></td>
+		    <td colspan="3" style="padding-left:20px;" id="login_time"></td>
+		  </tr>
+
+		  <tr>
+		    <td width="80" style="line-height:25px;text-align:right;"><?php echo getCommonResource('auth.safety.onlinetime');?></td>
+		    <td colspan="3" style="padding-left:20px;" id="login_duration"></td>
+		  </tr>
+			<input type="hidden" id="login_duration_timer" value="0">
+			<input id="token1" name="token" type="hidden" class="admin_text" placeholder="" value="<?php echo $_SESSION['token']; ?>" required style="width: 145px"/>
+		  <tr>
+		    <td colspan="4" align="center">
+			<input name="auth_logout" type="button" title="" value="<?php echo getCommonResource('auth.safety.logout');?>" class="input_submit" onclick="javascript:login_out();"/>&nbsp;&nbsp;&nbsp;
+			<input  name="mod_pass" type="button"  value="<?php echo getCommonResource('auth.safety.changepassword');?>" class="input_submit" id="mod_password"/></td>
+		  </tr>
+		</table>
+		</form>
+		</div>
+	</div>
+
+
+</div>
+</body>
+</html>
+<script type="text/javascript">
+<!--
+window.onload = function() {
+	var param = get_param();
+	var jsonobj = getCookieData();
+	var onlyLanguage = "<?php echo $onlyLanguage;?>";
+	if(onlyLanguage){
+		$("#language_cid").hide();
+	}
+	if(param.type == 'sms-webauth' && !jsonobj) {
+		$("#info").hide();
+		$("#free_webauth_info").hide();
+		$("#msg_info").show();
+		$("#mix_webauth_info").hide();
+		get_msg_status();
+	}
+	if(param.type == 'free-webauth' && !jsonobj) {
+		$("#info").hide();
+		$('#msg_info').hide()
+		$("#mix_webauth_info").hide();
+		$("#free_webauth_info").show();
+    }
+    if(param.type == 'mix-webauth' && !jsonobj){
+    	$("#info").hide();
+		$('#msg_info').hide()
+		$("#free_webauth_info").hide();
+		$("#mix_webauth_info").show();
+
+		var p = Number(param.p);
+		var local_p_res = p&1;
+		var sms_p_res = p&2;
+		var qrcode_p_res = p&8;
+		var free_p_res = p&16;
+		if(local_p_res==0){
+			$("#mix_local").hide();
+		}
+		if(sms_p_res==0){
+			$("#mix_sms").hide();
+		}
+		if(qrcode_p_res==0){
+			$("#mix_qrcode").hide();
+		}
+		if(free_p_res==0){
+			$("#mix_free").hide();
+		}
+		if(wechat_p_res==0){
+			$("#mix_wechat").hide();
+		}
+    }
+
+	if(param.type === 'wechat-webauth' && !jsonobj) {
+		$("#info").hide();
+		$("#free_webauth_info").hide();
+		$("#msg_info").hide();
+		$("#mix_webauth_info").hide();
+		$("#wechat_info").show();
+		$.ajax({
+			url: 'wechat_webauth.php?api=option',
+			type: 'POST',
+			dataType: 'JSON',
+			success: function (res) {
+
+				if(!res.appid || !res.hello_url) {
+					$('.no-cnf').css({
+						'display':'block'
+					})
+					return false;
+				}
+
+				$('.no-cnf').css({
+					'display':'none'
+				})
+				new WxLogin({
+					self_redirect: false,
+					id: "wechat_login_qrcode",
+					appid: res.appid,
+					scope: "snsapi_login",
+					redirect_uri: res.hello_url,
+					state: window.btoa(
+							unescape(encodeURIComponent(JSON.stringify({
+								oem_id: res.oem_id,
+								s_ip: res.s_ip,
+								t_ip: res.t_ip,
+								sn: res.sn,
+							})))),
+					style: "black",
+					lang: '<?=$lang?>',
+				});
+			},
+		});
+	}
+
+    if(!isCaptcha){
+    	$("#captcha_tr").hide();
+    }
+    /*<?php if(!$isCaptcha){ ?>
+		$("#captcha_tr").hide();
+	<?php } ?>*/
+
+	//屏蔽右键单击
+	document.oncontextmenu = function() {
+	  //alert('屏蔽右键');
+		return false;
+	}
+ }
+ var jsonobj = getCookieData();
+if(jsonobj){
+	var param = get_param();
+	if (param && param.type == 'sms-webauth') {
+		msgauthkeepalive_fun();
+	} else if(param && param.type == 'free-webauth') {
+		free_webauthkeepalive_fun(jsonobj.username, window.btoa(jsonobj.secret));
+	}else if(param && param.type === 'wechat-webauth') {
+		wechatauthkeepalive_fun(jsonobj);
+	} else {
+		let name = window.atob(jsonobj.username);
+		webauthkeepalive_fun(name,jsonobj.secret);
+	}
+}
+var timer = 0;
+var myInterval = window.setInterval(function() {
+		timer = parseInt($('#login_duration_timer').val());
+		if(timer > 0){
+			timer++;
+			$('#login_duration_timer').val(timer);
+			$('#login_duration').html(time_To_hhmmss(timer));
+		}
+},1000);
+
+function setSecondInterval() {
+	clearInterval(myInterval);
+	myInterval = window.setInterval(function() {
+		var timer = parseInt($('#login_duration_timer').val());
+		timer++;
+		$('#login_duration_timer').val(timer);
+		$('#login_duration').html(time_To_hhmmss(timer));
+	},1000);
+}
+function setLanguage(lang) {
+	if(1==lang){
+		$.ajax({
+			url:"change_language.php",
+			data:{'lang':'zh'},
+			dataType:'text',
+			type:"post",
+			success:function(data){
+				// alert(data);
+				window.location.reload();
+			}
+		})
+	}else if(2==lang){
+		$.ajax({
+			url:"change_language.php",
+			data:{'lang':'en'},
+			dataType:'text',
+			type:"post",
+			success:function(data){
+				// alert(data);
+				window.location.reload();
+			}
+		})
+	}else{
+
+	}
+}
+
+var mobile_timer=null;
+function get_mobile_vlcode(src){
+	$("#msg_error").html('');
+	var mobile_count = 120;
+	var res = /^(13|15|01|18|17){1}(\d){9}$/;
+	var obj_sms_auth = $('input[name="sms_auth"]');
+	/*var timestamp=new Date().getTime();*/
+	var obj = $('input[name=mobile]');
+	var mobile = obj.val();
+	var token = $('#token').val();
+	var token1 = aes_encrypt(token);
+	if (!mobile) {
+		alert("<?php echo getCommonResource('auth.cant.moblie.empty'); ?>");
+		obj.focus();
+		return false;
+	}
+	if (!res.test(mobile)) {
+		alert("<?php echo getCommonResource('auth.cant.moblie.error'); ?>");
+		obj.focus();
+		return false;
+	}
+	/*if(obj_sms_auth.val()){
+		var obj_sms_auth_arr = obj_sms_auth.val().split('^#');
+		var minutes = Math.floor(timestamp - parseInt(obj_sms_auth_arr[0]))/1000/60;
+		if(parseInt(minutes) < 3 && obj_sms_auth_arr[1] == mobile){
+			alert('该手机号3分钟内不允许重复获取验证码');
+			return false;
+		}
+	}*/
+
+	$.ajax({
+		url: 'auth_submit.php?act=sms_vlcode_check&t=' + Math.random(),
+		type: 'POST',
+		data: {mobile: mobile,token: token1},
+		//data: 'mobile='+mobile,
+		async: false,
+		timeout: 30000,
+		success: function(data) {
+
+			if(data != 'ok') {
+				$("#msg_error").html(data);
+			} else {
+				if(mobile_timer==null){
+					mobile_timer=setInterval(function(){
+						mobile_count--;
+						$("#mobile_msg").text(mobile_count+"<?php echo getCommonResource('auth.input.getverifynums');?>");
+						$("#mobile_msg").removeAttr('onclick');
+						// console.log(mobile_count, 'mobile_count')
+						if(mobile_count<=0){
+							clearInterval(mobile_timer);
+							$("#mobile_msg").text("<?php echo getCommonResource('auth.input.getverifynum');?>");
+							$("#mobile_msg").attr('onclick','get_mobile_vlcode(this);');
+							mobile_timer=null;
+							mobile_count=120;
+						}
+					},1000);
+				}
+			}
+
+			/*var ret = send_sms_code_transform(data);
+			alert(ret);*/
+			/*$(src).attr('onclick','get_mobile_vlcode(this);');
+			if(data != '0')
+				obj_sms_auth.val('');*/
+		}
+	});
+}
+
+/*get message send status*/
+function get_msg_status() {
+	$.ajax({
+		url: 'auth_submit.php?act=sms_send_status&t=' + Math.random(),
+		type: 'GET',
+		dataType: 'json',
+		async: false,
+		timeout: 30000,
+		success: function(data) {
+			if (data.time_left == 0 || !data.time_left) {
+				$("#mobile_msg").attr('onclick','get_mobile_vlcode(this);');
+				$("#mobile_msg").text("<?php echo getCommonResource('auth.input.getverifynum');?>");
+			} else {
+				if (mobile_timer == null) {
+					var obj = $('input[name=mobile]');
+					obj.val(data.phone);
+					mobile_count = data.time_left;
+					mobile_timer=setInterval(function(){
+						mobile_count--;
+						$("#mobile_msg").text(mobile_count+"<?php echo getCommonResource('auth.input.getverifynums');?>");
+						$("#mobile_msg").removeAttr('onclick');
+						if(mobile_count<=0){
+							clearInterval(mobile_timer);
+
+							$("#mobile_msg").text("<?php echo getCommonResource('auth.input.getverifynum');?>");
+							$("#mobile_msg").attr('onclick','get_mobile_vlcode(this);');
+							mobile_timer=null;
+							mobile_count=120;
+						}
+					},1000);
+				}
+			}
+		}
+	});
+}
+
+function msg_form_submit() {
+	var obj = $('input[name=mobile]');
+	var mobile = obj.val();
+	var vld = $('input[name=vldcode]');
+	var vldcode = vld.val();
+	var token = $('#token').val();
+	var token1 = aes_encrypt(token);
+	var res = /^(13|15|01|18|17){1}(\d){9}$/;
+
+	if (!mobile) {
+		alert("<?php echo getCommonResource('auth.cant.moblie.empty'); ?>");
+		obj.focus();
+		return false;
+	}
+	if (!res.test(mobile)) {
+		alert("<?php echo getCommonResource('auth.cant.moblie.error'); ?>");
+		obj.focus();
+		return false;
+	}
+
+	if (!vldcode) {
+		alert("<?php echo getCommonResource('auth.cant.vldcode.empty'); ?>");
+		vld.focus();
+		return false;
+	}
+
+	if (!/(\d{6})/.test(vldcode)) {
+		alert("<?php echo getCommonResource('auth.cant.vldcode.error'); ?>");
+		vld.focus();
+		return false;
+	}
+
+  	var jsonstr = JSON.stringify({name: mobile,code: vldcode,token: token1});
+  	var data = window.btoa(jsonstr);		//base64编码，ie10+支持
+	$.ajax({
+		url: 'auth_submit.php?act=msgauthlogin&t=' + Math.random(),
+		type: 'POST',
+		data: {data: data},
+		async: false,
+		timeout: 30000,
+		success: function(data) {
+			var weburl = decodeURIComponent(get_weburl()),logincookie= '';
+			if (data.indexOf('0#') > -1) {
+				var arr = data.split('#');
+				$("#msg_error").html(arr[1]);
+				return false;
+			} else {
+				var arr = data.split('&');
+				$('.login_success_div').show();
+				// $('#keepalive_Prompt').html(msg6);
+				$('#msg_info').hide();
+				$('.login_div').hide();
+				$('#login_username').html(arr[0]);
+				$('#login_time').html(arr[1]);
+				$('#login_ip').html(arr[2]);
+				$('#mod_password').hide();
+				logincookie = '{"username":"' + arr[0] + '","loginipaddr":"' + arr[2] + '","logintime":"' + arr[1] + '","logintype": "message"}';
+				setCookie('logincookie', logincookie);
+				setSecondInterval();
+				setTimeout('msgauthkeepalive_fun()', 30 * 1000);
+				/*if (time > 0) {
+					time = parseInt(time) * 1000;
+					setTimeout('webauthkeepalive_fun(\'' + arr[0] + '\',\'' + arr[3] + '\')', time);
+				}
+				if(weburl){
+					btn_win_open(weburl);
+				}*/
+			}
+		}
+	});
+}
+
+function free_webauth_form_submit(){
+	var token = $('#token').val();
+	var token1 = aes_encrypt(token);
+	var jsonstr = JSON.stringify({token: token1});
+  	var data = window.btoa(jsonstr);		//base64编码，ie10+支持
+
+	$.ajax({
+		url: 'auth_submit.php?act=free_webauth_login&t=' + Math.random(),
+		type: 'POST',
+		data: {data: data},
+		async: false,
+		timeout: 30000,
+		success: function(data) {
+			var weburl = decodeURIComponent(get_weburl()),logincookie= '';
+			if (data.indexOf('0#') > -1) {
+				var arr = data.split('#');
+				$("#free_webauth_error").html(arr[1]);
+				return false;
+			} else {
+				var arr = data.split('&');
+				$('.login_success_div').show();
+				$('#msg_info').hide();
+				$('.login_div').hide();
+				$('#login_username').html(arr[0]);
+				$('#login_time').html(arr[1]);
+				$('#login_ip').html(arr[2]);
+				$('#mod_password').hide();
+				logincookie = '{"username":"' + arr[0] + '","loginipaddr":"' + arr[2] + '","logintime":"' + arr[1] + '","logintype": "free_webauth","secret": "' + window.atob(arr[3]) + '"}';
+				setCookie('logincookie', logincookie);
+				setSecondInterval();
+				setTimeout('free_webauthkeepalive_fun(\'' + arr[0] + '\',\'' + arr[3] + '\')',  30 * 1000);
+
+			}
+		}
+	});
+}
+</script>

@@ -1,0 +1,9 @@
+{"data":[{"id":"traffic","span":12,"hasFullScreen":1,"chartType":1,"hasRefresh":1},
+	{"id":"ips","span":12,"hasFullScreen":1},
+	{"id":"av","span":12,"hasFullScreen":1},
+	{"id":"sys","span":12},
+	{"id":"apptop","span":12,"hasFullScreen":1,"chartType":1,"hasRefresh":1},
+	{"id":"license","span":12},
+	{"id":"appcate","span":12,"hasFullScreen":1,"chartType":1,"hasRefresh":1},
+	{"id":"userflow","span":12,"hasFullScreen":1,"chartType":1,"hasRefresh":1},
+	{"id":"admin","span":12},{"id":"syslog","span":12},{"id":"seclog","span":12},{"id":"ipslog","span":12},{"id":"avlog","span":12}]}

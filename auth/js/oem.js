@@ -1,0 +1,11 @@
+var OEM_CN="HY防火墙管理系统";
+var OEM_EN="HYKJ NGFW";
+var COPYRIGHT_CN="版权所有 © 广州泓盈信息科技有限公司2016-2025。保留一切权利。";
+var COPYRIGHT_EN="Copyright © Guangzhou Hongying Information Technology Co., Ltd. 2016-2025. All rights reserved.";
+var LOGIN_TITLE_CN="请登录HY防火墙管理系统";
+var LOGIN_TITLE_EN="Please Login HYKJ NGFW";
+var INDEX_TITLE_CN="HY防火墙管理系统";
+var INDEX_TITLE_EN="HYKJ NGFW";
+var DASH_PIE_COLOR="#3ec289:#686868";//首页环形图颜色与剩余部分颜色
+var AUTH_CN="认证登录";
+var AUTH_EN="Authentication Login";

@@ -1,0 +1,206 @@
+/* 登录头背景 */
+#login-content #login-head{
+	background-color: #DD4455; 
+	height: 57px;
+	margin-bottom: 30px;
+}
+/* 登录oem字体 */
+#login-content #login-head h2{
+	text-align: center;
+	color: #fff;
+	font-size:22px;
+	/* margin-bottom: 40px; */
+	top: 15px;
+	position: relative;
+}
+/* 登录oem LOGO */
+#login-content #login-head #login_img{
+    position: absolute;
+    width: 45px;
+    left: 59px;
+    top: 10px;
+}
+/* 登录按钮 */
+#login-content #cont_box .log_btn{
+	background: #DD4455 !important;
+}
+#login-content #cont_box .log_btn:hover{
+    background: #e86a78 !important;
+}
+/*登录语言选择*/
+#lang ul li:hover {
+    color: #DD4455;
+}
+/* index页头部menu颜色 */
+header{
+	background: #fff;
+    border-bottom:1px solid #f0f0f0;
+}
+/* index 头部字体颜色 */
+header .Dashboard a{
+	color: #333;
+}
+/* index 头部选中字体颜色 */
+header .Dashboard a.router-link-exact-active.router-link-active.active-menu{
+	color: #DD4455 !important;
+}
+/* index logo大小 */
+#logo #index_img{
+    height: 25px;
+    width: auto;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+}
+#logo #index_title{
+    font-size: 20px;
+    position: absolute;
+    left: 70px;
+}
+/*头部图标悬浮字体颜色*/
+.head_sel li:hover a {
+    color: #DD4455;
+}
+.head_sel_long li:hover a:not(.more_center){
+    color: #DD4455;
+}
+/*头部图标颜色*/
+.head_icon{
+    color: #333;
+}
+/* 左树菜单背景色 */
+#sidebar {
+    background: #333;
+    font-size: 14px;
+}
+ul.el-menu.el-menu-vertical-demo.el-menu--dark{
+	background-color: #333;
+}
+/* ul.el-menu.el-menu-vertical-demo.el-menu--dark:hover{
+	background-color: #aaa;
+} */
+/* 左树选中菜单背景色 */
+#sidebar li.el-menu-item.is-active {
+    background: #DD4455 !important;
+}
+/* 左树菜单字体色 */
+#sidebar .el-menu--dark .el-menu-item,#sidebar .el-menu--dark .el-submenu__title {
+    color: #fff;
+}
+/* 左树悬浮背景色 */
+#sidebar .el-menu .el-menu-item:hover {
+    background-color: rgb(72, 87, 106);
+}
+/* 左树头（锁）背景色 */
+#sidebar .tit {
+    background: #333;
+}
+/* 左树锁的颜色*/
+#sidebar_img_top.navimg{
+    color: #fff;
+}
+/*tab字体颜色*/
+.el-tabs__item.is-active {
+    color: #DD4455 !important;
+}
+/* 按钮颜色 */
+.el-button--primary{
+    color: #fff !important;
+    background-color: #DD4455 !important;
+    border-color: #DD4455 !important;
+}
+.el-button--primary:hover{
+    background: #DD4455 !important;
+    border-color: #DD4455 !important;
+    color: #fff !important;
+}
+.el-button--default:hover, .el-button--default:focus {
+    color: #DD4455 !important;
+    border-color: #DD4455 !important;
+}
+.el-button--default.el-button--primary{
+    color: #fff !important;
+}
+
+/*select下拉框颜色*/
+.el-select-dropdown__item.selected {
+    color: #fff;
+    background-color: #DD4455 !important;
+}
+/*radio 颜色*/
+.el-radio-button__orig-radio:checked + .el-radio-button__inner {
+    color: #fff !important;
+    background-color: #DD4455 !important;
+    border-color: #DD4455 !important;
+    box-shadow: -1px 0 0 0 #DD4455 !important;
+}
+.el-radio-button__inner:hover {
+    color: #DD4455 !important;
+}
+/*switch 颜色*/
+.el-switch.is-checked .el-switch__core {
+    border-color: #DD4455 !important;
+    background-color: #DD4455 !important;
+}
+/*input框 颜色*/
+.el-input__inner:focus{
+    border-color: #DD4455 !important;
+}
+/*dialog 关闭按钮*/
+.el-dialog__headerbtn:focus .el-dialog__close, .el-dialog__headerbtn:hover .el-dialog__close {
+    color: #DD4455 !important;
+}
+/*checkbox 颜色*/
+.el-checkbox__input.is-checked .el-checkbox__inner {
+    background-color: #DD4455 !important;
+    border-color: rgb(1, 144, 254) !important;
+}
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: #DD4455 !important;
+    border-color: #DD4455 !important;
+}
+.el-checkbox__inner:hover {
+    border-color: #DD4455 !important;
+}
+/* transfer框头部颜色*/
+.el-transfer-panel .el-transfer-panel__header {
+    background: rgb(251, 253, 255) !important;
+}
+/* 时间选择确定按钮 */
+.el-time-panel__btn.confirm {
+    color: #DD4455 !important;
+}
+.el-time-panel__content::after, .el-time-panel__content::before {
+    color: #fff;
+    background-color: #DD4455 !important;
+}
+/* 日期选择颜色 */
+.el-date-table td.today {
+    color: #DD4455 !important;
+}
+.el-date-table td.today:before {
+    border-top: 0.5em solid #DD4455 !important;
+}
+.el-picker-panel__icon-btn:hover {
+    color: #DD4455 !important;
+}
+.el-date-table td.in-range {
+    background-color: rgb(210, 236, 255) !important;
+}
+.el-date-table td.current:not(.disabled), .el-date-table td.start-date, .el-date-table td.end-date {
+    background-color: #DD4455 !important;
+    color: #fff !important;
+}
+.el-picker-panel__link-btn {
+    color: #DD4455 !important;
+}
+/* dialog框中加号 */
+.el-button--text {
+    color: #DD4455 !important;
+}
+/* 分页器颜色 */
+.el-pager li.active {
+    border-color: #DD4455 !important;
+    background-color: #DD4455 !important;
+    color: #fff;
+}

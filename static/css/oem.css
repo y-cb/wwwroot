@@ -1,0 +1,288 @@
+/* 登录头背景 */
+#login-content{
+    /* border-radius: 10px; */
+    background-color: #fff; 
+    box-shadow:0 9px 10px 0 #ccc; 
+    /* box-shadow:0 0 0 0 green,0 0 0 0 blue,0 2px 5px -1px #999,0 0 0 0 yellow; *//*左，上，下，右阴影，3px 为阴影扩展半径*/
+}
+#login-content #login-head{
+	/* background-color: rgba(0,0,0,0.5)!important; */ 
+	height: 65px;
+	margin-bottom: 25px;
+    /* border-radius: 10px 10px 0 0; */
+    background-color: #333!important;
+    background-size: cover;
+}
+/* 登录oem字体 */
+#login-content #login-head h2{
+	/* text-align: center; */
+	color: #fff;
+	font-size:24px;
+    font-weight: bold;
+	/* margin-bottom: 40px; */
+	top: 20px;
+    letter-spacing: 1px;
+	position: relative;
+    left: 104px;
+    line-height: 34px;
+}
+/* 登录oem LOGO */
+#login-content #login-head #login_img{
+    position: absolute;
+    width: 48px;
+    left: 52px;
+    top: 7px;
+}
+/* 登录按钮 */
+#login-content #cont_box .log_btn{
+    background: #ef7f19 !important;
+    border-radius: 5px;
+	/* background: #5bc0de !important; */
+}
+#login-content #cont_box .log_btn:hover{
+    background: #fb9a41 !important;
+}
+/*登录语言选择*/
+#lang ul li:hover {
+    color: #686868;
+}
+#lang #lang_cur{
+    color: #9f9f9f !important;
+}
+/* index页头部menu颜色 */
+header{
+    /* background: linear-gradient(to right, #0052c3 , #2f7ff4) !important; */
+	background: #333;
+}
+/* index 头部字体颜色 */
+header .Dashboard a,header a .Dashboard{
+	color: #c3c3c3;
+}
+header .Dashboard-active,header .Dashboard:hover{
+    /*radial-gradient(设置渐变的中心，渐变形状 渐变大小，起始颜色值，中间颜色值 中间颜色位置，终点颜色)*/
+    /* background-image: radial-gradient(center bottom, ellipse cover, rgba(246,176,38,0.6),#444,#444);
+    background-image: -o-radial-gradient(center bottom, ellipse cover, rgba(246,176,38,0.6),#444,#444);
+    background-image: -ms-radial-gradient(center bottom, ellipse cover, rgba(246,176,38,0.6),#444,#444);
+    background-image: -moz-radial-gradient(center bottom, ellipse cover, rgba(246,176,38,0.6),#444,#444);
+    background-image: -webkit-radial-gradient(center bottom, ellipse cover, rgba(246,176,38,0.6),#444,#444); */
+   /* background-image: radial-gradient(farthest-side at 50% 110%, rgba(246,176,38,0.6),#444,#444);
+   background-image: -o-radial-gradient(farthest-side at 50% 110%, rgba(246,176,38,0.6),#444,#444);
+   background-image: -ms-radial-gradient(farthest-side at 50% 110%, rgba(246,176,38,0.6),#444,#444);
+   background-image: -moz-radial-gradient(farthest-side at 50% 110%, rgba(246,176,38,0.6),#444,#444);
+   background-image: -webkit-radial-gradient(farthest-side at 50% 110%,  rgba(246,176,38,0.6),#444,#444); */
+    background-image: radial-gradient(28px 13px at 50px 44px,rgba(244,119,25,0.7),#333);//radial-gradient(40px 40px at 44px 70px,rgba(244,119,25,0.7),#444);
+    background-image: -webkit-radial-gradient(28px 13px at 50px 44px,rgba(244,119,25,0.7),#333);
+    background-image: -o-radial-gradient(28px 13px at 50px 44px,rgba(244,119,25,0.7),#333);
+   background-image: -ms-radial-gradient(28px 13px at 50px 44px,rgba(244,119,25,0.7),#333);
+   background-image: -moz-radial-gradient(28px 13px at 50px 44px,rgba(244,119,25,0.7),#333);
+
+    /* margin-top:20px; */
+    /* background:  radial-gradient(closest-side circle at 50% 80%,ellipse cover, #f6b026, #444); */
+}
+header .Dashboard-active a,header a .Dashboard-active,header a .Dashboard:hover{
+    color: #fff;
+    font-weight:500;
+}
+/* header .Dashboard-active .iconhead{
+    color: #2f7ff3;
+} */
+/* index 头部选中字体颜色 */
+header .Dashboard a.router-link-exact-active.router-link-active.active-menu{
+	color: #0965b5 !important; 
+}
+/* index logo大小 */
+#logo #index_img{
+    height: 44px;
+    width: auto;
+    position: absolute;
+    left: 10px;
+    bottom: 4px;
+}
+#logo #index_title{
+    font-size: 20px;
+    position: absolute;
+    left: 70px;
+}
+/*头部图标悬浮字体颜色*/
+.head_sel li:hover a {
+    color: #66CCFF;
+}
+.head_sel_long li:hover a:not(.more_center){
+    color: #66CCFF;
+}
+/*头部图标颜色*/
+.head_icon{
+    color: #fff;
+}
+/* 左树菜单背景色 */
+#sidebar {
+    background: #e2e2e2;
+    font-size: 14px;
+    box-shadow:inset -5px 0px 5px -5px rgba(0,0,0,0.15);
+}
+ul.el-menu.el-menu-vertical-demo.el-menu--dark{
+	background-color: #e2e2e2;
+    box-shadow:inset -5px 0px 5px -5px rgba(0,0,0,0.15);
+}
+/* ul.el-menu.el-menu-vertical-demo.el-menu--dark:hover{
+	background-color: #aaa;
+} */
+/* 左树选中菜单字体色 */
+#sidebar li.el-menu-item.is-active {
+    background: #d3d3d3 !important;
+    color: #2f7ff3;
+}
+/* 左树三级菜单未选中字体色 */
+#sidebar .el-menu--dark .el-menu-item{
+    color: #333;
+}
+/*二级菜单字体颜色*/
+#sidebar .el-menu--dark .el-submenu__title {
+    color: #333;
+    font-weight: bold;
+}
+#sidebar .el-menu-item.lis{
+    color: #333;
+    font-weight: bold;
+}
+/* 左树三级菜单背景色 */
+#sidebar .el-menu--dark .el-submenu .el-menu {
+    background-color: #e2e2e2;
+    box-shadow:inset -5px 0px 5px -5px rgba(0,0,0,0.15);
+}
+/* 左树悬浮背景色 */
+#sidebar .el-menu .el-menu-item:hover {
+    background-color: #d3d3d3;
+}
+#sidebar .el-menu--dark .el-menu-item:hover,#sidebar .el-menu--dark .el-submenu__title:hover {
+    background-color: #d3d3d3;
+}
+/* 左树头（锁）背景色 */
+#sidebar .tit {
+    background: #e2e2e2;
+    box-shadow:inset -5px 0px 5px -5px rgba(0,0,0,0.15);
+}
+/* 左树锁的颜色*/
+#sidebar_img_top.navimg{
+    color: #666;
+}
+/*页面标题字体颜色*/
+#netpage .el-breadcrumb__item__inner{
+    color: #333;
+    font-weight: bold;
+}
+/* 按钮颜色 */
+.el-button--primary{
+    color: #fff !important;
+    background-color: #1b8ace !important;
+    border-color: #1b8ace !important;
+}
+.el-button--primary:hover{
+    background: #20a0ff !important;
+    border-color: #20a0ff !important;
+    color: #fff !important;
+}
+.el-button--default:hover, .el-button--default:focus {
+    color: #20a0ff !important;
+    border-color: #20a0ff !important;
+}
+.el-button--default.el-button--primary{
+    color: #fff !important;
+}
+.el-button--primary.is-disabled{
+    color: rgb(191, 203, 217) !important;
+    background-color: rgb(238, 241, 246) !important;
+    border-color: rgb(209, 219, 229) !important;
+}
+/*对话框确认按钮置灰颜色*/
+.dialog_submit_btn.el-button.el-button--primary.is-disabled{
+    color: #fff !important;
+    background-color: #1b8ace !important;
+    border-color: #1b8ace !important;
+  }
+/*select下拉框颜色*/
+.el-select-dropdown__item.selected {
+    color: #fff;
+    background-color: #1b8ace !important;
+}
+/*radio 颜色*/
+.el-radio-button__orig-radio:checked + .el-radio-button__inner {
+    color: #fff !important;
+    background-color: #1b8ace !important;
+    border-color: #1b8ace !important;
+    box-shadow: -1px 0 0 0 #1b8ace !important;
+}
+.el-radio-button__inner:hover {
+    color: #20a0ff !important;
+}
+/*switch 颜色*/
+.el-switch.is-checked .el-switch__core {
+    border-color: #1b8ace !important;
+    background-color: #1b8ace !important;
+}
+/*input框 颜色*/
+.el-input__inner:focus{
+    border-color: #1b8ace !important;
+}
+/*dialog 关闭按钮*/
+.el-dialog__headerbtn:focus .el-dialog__close, .el-dialog__headerbtn:hover .el-dialog__close {
+    color: #1b8ace !important;
+}
+/*checkbox 颜色*/
+.el-checkbox__input.is-checked .el-checkbox__inner {
+    background-color: #1b8ace !important;
+    border-color: rgb(1, 144, 254) !important;
+}
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: #1b8ace !important;
+    border-color: #1b8ace !important;
+}
+.el-checkbox__inner:hover {
+    border-color: #1b8ace !important;
+}
+/* transfer框头部颜色*/
+.el-transfer-panel .el-transfer-panel__header {
+    background: #e2e2e2 !important;
+}
+/* 时间选择确定按钮 */
+.el-time-panel__btn.confirm {
+    color: #1b8ace !important;
+}
+.el-time-panel__content::after, .el-time-panel__content::before {
+    color: #fff;
+    background-color: #1b8ace !important;
+}
+/* 日期选择颜色 */
+.el-date-table td.today {
+    color: #1b8ace !important;
+}
+.el-date-table td.today:before {
+    border-top: 0.5em solid #1b8ace !important;
+}
+.el-picker-panel__icon-btn:hover {
+    color: #1b8ace !important;
+}
+.el-date-table td.in-range {
+    background-color: rgb(210, 236, 255) !important;
+}
+.el-date-table td.current:not(.disabled), .el-date-table td.start-date, .el-date-table td.end-date {
+    background-color: #1b8ace !important;
+    color: #fff !important;
+}
+.el-picker-panel__link-btn {
+    color: #1b8ace !important;
+}
+/* dialog框中加号 */
+.el-button--text {
+    color: #1b8ace !important;
+}
+/* 分页器颜色 */
+.el-pager li.active {
+    border-color: #6ca9ff !important;
+    background-color: #6ca9ff !important;
+    color: #fff;
+}
+/*页面标题左侧竖线颜色*/
+#content .title_box {
+    /* border-left: 2px solid #2f7ff4 !important; */
+}

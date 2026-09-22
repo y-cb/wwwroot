@@ -1,0 +1,406 @@
+login:
+  password_error: Password Error
+  captcha_error: Captcha Error
+  user_pwd_error: Username or password is incorrect
+  input_data_err: Input Data Error
+permission:
+  deny: Permission deny      
+log:
+  ID: ID
+  time: Time
+  daemon: Type
+  level: Level
+  msg: Message
+  level0: Emergency
+  level1: Alarm
+  level2: Serious
+  level3: Error
+  level4: Warning
+  level5: Notice
+  level6: Information
+  level7: Emergency
+  module0: Anti-Virus
+  module1: Intrusion Prevention
+  module8: IPSec VPN Event
+  module15: NAT Event
+  module17: HA Event
+  module60: VRRP Event
+  module20: System Event
+  module21: Alarm Event
+  module22: Interface Information
+  module26: OSPF Event
+  module27: RIP Event
+  module28: QOS Event
+  module29: DDNS Event
+  module55: BGP Event
+  module75: Audit Event
+  module50: Healthy Check Event
+  module51: Virtual Service Event
+  module52: Virtual Link Event
+  module53: Local Load Event
+  module54: Global Load Event
+  module57: DNS Event
+  module40: User Quota Event
+  module41: Session Keep Event
+  module42: Content Exchange Event
+  module43: HTTP ERROR CODE Event
+  module61: HTTP Redirection Event
+  module58: Congestion Control Event
+  module59: DNS Transparent Proxy Event
+  module44: CACHE Event
+  module45: SSL Unload Event
+  module46: HTTP Compression Event
+  module49: TCP Connection Reuse Event
+  module14: Firewall Policy
+  module2: DDOS Attack
+  module47: HTTP Protection
+  module48: CC Attack
+  module24: SCAN Attack
+  module56: SQL Injection /XSS Attack
+  module23: Configuration Audit
+  module62: Application Control
+  module63: Flood Attack
+  module64: APT
+  module65: Threat Intelligence
+  module78: Shared Access
+  module86: Divert Policy
+  module79: User Brute Force
+  module80: User Resource Policy
+  module87: External Connect
+  module88: Brute Force
+  module100: Blacklist
+  id: Log ID
+  userid: User ID
+  UserID: User ID
+  username: Username
+  UserName: Username
+  srcip: Source IP
+  SrcIP: Source IP
+  dstip: Destination IP
+  DstIP: Destination IP
+  protocol: Protocol
+  Protocol: Protocol
+  srcport: Source Port
+  SrcPort: Source Port
+  dstport: Destination Port
+  DstPort: Destination Port
+  srcmac: Source Mac
+  SrcMac: Source Mac
+  dstmac: Destination Mac
+  DstMac: Destination Mac
+  appname: App Name
+  AppName: App Name
+  ruleid: Rule ID
+  eventid: Event ID
+  eventset: Event Set
+  eventname: Event Name
+  eventtype: Event Type
+  protocoltype: High Layer Protocol
+  action: Action
+  Action: Action
+  srcprovince: Source Of The Attack Area
+  dstprovince: Destination Of The Attack Area
+  mergecount: Attack Number
+  create_at: Time
+  appnameen: App English Name
+  appcatename: App Category English Name
+  appaction: Appaction
+  host: Host
+  url: URL
+  title: Web Title
+  category: URL Category
+  avfile: Virus File
+  avfilename: Virus Name
+  name: User Name
+  key: Secret Key
+  assets_ip: Assets IP
+  assets_name: Username
+  assets_desc: Description
+  assets_part: Department
+  assets_importance: Importance
+  assets_os: Operation System
+  assets_source: Source
+  assets_state: State
+  assets_service: Service
+  ip: IP
+  port: Port
+  port_status: Port Status
+  port_service: Service
+  service: Service
+  weakpwduser: Weakpassword User
+  count: Number of visits
+  object: Object 
+  source: Source
+  ioctype: Intelligence Category
+  confidence: Confidence
+  query: Query
+  risk: Risk
+  iocid: Intelligence ID
+  iochash: Intelligence HASH
+  threattype: Threaten Type
+  hotid: Associated Hot ID
+  loglevel: Log Level    
+  virusname: Virus Name
+  virusfilename: Virus Filename
+  VirusName: Virus Name
+  VirusFileName: Virus Filename
+  server_addr: Server Address
+  exconn_addr: External Connection Addresses
+  proto: Protocol
+  filename: File Name
+  filesize: File Size
+  filetype: File Type
+  result: Detection Result
+  security: Security
+  low_risk: Low Risk
+  medium_risk: Medium Risk
+  high_risk: High Risk
+  ininterface: Source Interface
+  outinterface: Destination Interface
+  fwpolicyid: Integration Policy ID
+  content: Content
+  del_success: Clear Success
+apt:
+  level0: security
+  level1: Low risk
+  level2: Medium risk
+  level3: high-risk
+  level4: unknown
+license:
+  license4: DNS Parse Error
+  license8: Illegal Serial Number
+  license2: The activation code has been activated by other serial number，unable to use again
+  license9: Serial number is not corresponding with authorization information
+  license11: Serial number is not corresponding with authorization information
+  license10: Serial number is not corresponding with authorization information
+  license3: Activation code does not exist
+  license1: Activation code does not exist
+  license7: Cannot use the generic serial number as an activation code
+  license6: The activation code to use to reach upper limit
+update:
+  file_empty: File can not be empty
+  update_to: Upgrade to
+  update_error_latest: Already Latest Versioin
+  update_error_license: No License
+  update_error_load: Load error
+  update_error_159: DNS query failed
+  update_error_160: Failed to connect to the server
+  update_error_50000: Failed to uploadfile
+  import_failed: Import failed
+  import_success: Import success
+  space_not_enough: Insufficient Equipment Space
+  file_download_wrong: File file_download Failed
+  ip_unreachable: Server Address Unreachable
+cert:
+  not_exist: File dose not exist
+report:
+  no_image_path: /usr/local/wwwroot/api/resource/lang/en/nodata.png
+  to: To
+  app_des1: The chart information shown in the figure below is the application flow trend chart within the selected time range.
+  app_des3: .
+  app_des4: The chart below shows the TOP10 application flow details for the selected time range. Among them
+  app_des5:  has maximum flow.
+  app_des6: The APP library belongs to 20 categories.
+  app_des7: Application classification respectively：instant messaging， P2P software， streaming media， stock software， online game， file transfer， search engines， online community， database， network protocol， online shopping， email， telecontrol， websites， proxy software， office software， online update， network tools， electronic commerce and others. Each category has its own application.
+  app_des8: The chart below shows the flow details of the applied classification within the selected time range. This information can help you better understand the traffic situation of the classification of equipment， and timely adjust the control of the corresponding strategy.
+  top_app: Application Traffic Ranking
+  template_flowin: Upstream Flow
+  template_flowout: Downstream Traffic
+  template_flowtotal: Total Traffic
+  category_des1: The chart below shows the details of app category traffic information for the selected time range.
+  catelist: Application Categories
+  user_flow_des1: The chart below shows the user traffic details in the selected time range， in which the statistics are the top10 user traffic statistics， where the user is
+  user_flow_des2: has maximum flow.
+  web_asscess_des1: The chart below shows the number of web visits in the selected time range， among which
+  user_asscess_des1: The chart below shows the number of user visits in the selected time range， among which
+  user_asscess_des2: has most visits.
+  web_access_name: Host
+  access_times: Visits
+  web_category_des1: The chart below shows the number of web access taxonomies for the selected time range， among which
+  cate_access_name: URL Category
+  flow_both_des1: The chart below shows the traffic graph of the device in the selected time range
+  cpu_usage_des1: The chart below shows the CPU usage of the device in the selected time range
+  mem_usage_des1: The chart below shows the memory usage of the device in the selected time range
+  ips_des1: As of the current time， the number of the IPS library is
+  ips_des2: The chart below shows the statistics of the TOP10 IPS event in the selected time range. Among them 
+  ips_des3: .
+  ips_des4: has the highest attack number，and the number of attacks is
+  ips_des5: Please adjust the equipment according to the actual situation and improve the protection level.
+  ips_des6: In the selected time range， the device is not attacked by IPS.
+  ips_setname: Event Name
+  attack_times: Attack times
+  av_des1: As of the current time， the number of AV library is
+  av_des2: The chart below shows the statistics of the TOP10 AV event in the selected time range. Among them
+  av_des3: In the selected time range， the device is not attacked by the virus.
+  def_des1: As of the current time， the number of Threat Intelligence is
+  def_des2: The chart below shows the statistics of the TOP10 Threat Intelligence in the selected time range. Among them
+  def_des3: In the selected time range， the device has no threat intelligence logs.
+  def_des4: The most threat intelligence events, the number of triggers is
+  def_name: Threat intelligence indicators
+  object_security_log: Device security log statistics within the selected time range.
+  ips_log_num: Times
+  name: Name
+  app_app: ' application'
+  app_area: ' traffic tend'
+  app_nodata: nodata
+  app_top10: Top10 Application
+  app_bar: ' traffic ranking'
+  url_category: Other Categories
+  statics_user_flow: User Traffic Statistics
+  ips_attack_protection_top10: TOP10 IPS Statistics
+  av_attack_protection_top10: TOP10 AV Statistics
+  threat_protection_top10: TOP10 Threat Intelligence Statistics 
+  web_access_top10: TOP10 Web Access Statistics
+  user_access_top10: TOP10 User Access Statistics
+  object_web_statistics: Web Access Category Statistics
+  cpuusage: CPU Usage
+  memusage: Memory Usage
+  statics_ele_healthy_flow: Device Traffic
+  app_out: ' upstream'
+  app_in: ' downstream'
+  ftp_connect_unreached_error: FTP Server is Unreachable
+  ftp_connect_user_error: FTP Username or Password is Wrong
+  ftp_config_file_error: Please Configure The FTP Server
+  device_loss_rate: Device Loss Rate
+  device_delay_rate: Device Delay Rate
+  device_jitter_rate: Device Jitter Rate
+  null_desc: No signal data for the selected strategy object.
+  security_top10_title: TOP10 Security Area Analysis
+  security_desc: The icon information shown in the figure below is a regional security analysis
+  security_null_desc: 'Within the selected time range, the equipment has no regional security analysis data.'
+  country: Country
+  nums: Number of attacks
+  attacker: Attacker
+  start_time: Start Time
+  end_time: End Time
+  level_high: High
+  level_middle: Middle
+  level_low: Low
+  level_safe: Safe
+  assets_addr: Assets Address
+  importance: Assets Importance
+  os: Operate System
+  attack_counts: Attack Counts
+  risk_level: Risk Level
+  send_err: Send Failed
+app_report:
+  app: Appaction
+  area: ' traffic tend'
+  bar: traffic ranking
+  index_top_app: ' traffic ranking '
+  index_top_app_up: ' upstream'
+  index_top_app_down: ' downstream'
+  app_both: ' bidirection'
+  index_top_app_totalspeed: Total transfer rate
+  last_one_flow: Last One Hour
+  last_day_flow: Last One Day
+  last_week_flow: Last One Week
+statics:
+  ips_time_error: Start time or end time is wrong
+  ips_time_type_error: Time format error
+assets:
+  ip: Assets IP
+  desc: Description
+  name: Username
+  part: Department
+  importance: Importance
+  importance0: Ordinary Assets
+  importance1: Core Assets
+  state: State
+  state0: Online
+  state1: Free
+  source: Source
+  source0: Traffic Found
+  source1: Manually Add
+  source2: Port Scan
+  ource3: EDR Sync
+  os: Operation System
+  service: Available Service
+policy:
+  duplicate_scan_name: Duplicate scan name
+  duplicate_scan_time: Duplicate scan time
+  scan_task_busy: Scanning task busy
+  disallow_address: Disallow configuring 127 network  
+  custom_port_format_error: Custom port format error
+  no_scan_json: The JSON file does not exist
+  dic_used: The dictionary is used
+  dic_system: The dictionary is system dictionary
+  empty_dic_name_or_dic_content: Empty dic name or dic content
+  duplicate_dic_name: Duplicate dictionary name
+  duplicate_dic_content: Duplicate dictionary content
+  input_file_error: Input file error
+  input_file_count_error: Input file count error
+  out_null: Output null
+  more_than_config: More than configurable
+  scan_executing: Please stop all tasks and delete this
+  something_not_null: Name,address (service) type,address (service) or scan type cannot be empty
+  have_onekind_port: A port (service) must be configured
+  name_have_char: Name format error
+  desc_have_char: Description format error
+  name_length_wrong: Name length error
+  desc_length_wrong: Description length error
+  dic_length_wrong: Dictionary length error
+  dic_count_wrong: Dictionary contents total error
+  dic_no_name: No dictionary with this name
+  date_range_error: Date range error
+  address_format_error: Address format error
+  more_than_port_scan: Up to 500 ip address for configuration
+  more_than_port_scanp: Up to 200 port for configuration
+  more_than_weak_scan: Up to 100 ip address for configuration
+  repeat_port_scanp: Duplicate custom port
+sys_config_export:
+  number_must_pass: Serial number must be sent
+intelligence:
+  type_error: Type Error
+ips_attack:
+  All: All
+  Backdoor: Backdoor
+  BufferOverflow: BufferOverflow
+  Bypass: Bypass
+  CommandExecution: CommandExecution
+  DirectoryTraversal: DirectoryTraversal
+  DoS: DoS
+  InformationDisclosure: InformationDisclosure
+  RequestVulnerability: RequestVulnerability
+  SQLInjection: SQLInjection
+  VulnerabilityScanning: VulnerabilityScanning
+  WormVirus: WormVirus
+  XSS: XSS
+  cust_def_ips: Customer Defined Security
+assets_import:
+  input_file_error: Input file error
+  importance_not_null: Importance cannot be empty
+  assets_os_not_null: The operating system cannot be empty
+  ip_not_null: Asset IP cannot be empty
+  maximum: Asset quantity exceeds specification
+sms_auth:
+  key_length_error: The length of access key ID ranges from (1-31) characters
+  secret_length_error: The length range of access key secret is (1-31) characters
+  name_length_error: The length range of signature name is (1-31) characters
+  code_length_error: The length range of template code is (1-31) characters
+  sms_platform: Incorrect SMS platform parameters
+log_audit:
+  type_error: Format error
+  sip_err: Source IP format error
+  dip_err: Destination IP format error
+  ioctype_err: Intelligence category error
+  risk_err: Risk level error
+  level_err: Log level error
+system_time:
+  key_err: authorization key format error
+  server_err: Server format error
+  parameter_err: Parameter error
+  level_err: Level format error
+  time_err: End time cannot be less than start time
+log_sys:
+  sip_err: Source address format error
+  dip_err: Destination address format error
+  level_err: Level format error
+  time_err: End time cannot be less than start time
+  type_err: Wrong file type
+  type_not_null: File type cannot be empty
+external_study_res:
+  study_result: Study_Result
+wechat:
+  domain_err_1: WeChat Domain Name Whitelist
+  domain_err_2: Error

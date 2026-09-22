@@ -1,0 +1,201 @@
+/* 登录头背景 */
+#login-content #login-head{
+	background-color: #0068B7; 
+	height: 57px;
+	margin-bottom: 30px;
+}
+/* 登录oem字体 */
+#login-content #login-head h2{
+	text-align: center;
+	color: #fff;
+	font-size:22px;
+	/* margin-bottom: 40px; */
+	top: 15px;
+	position: relative;
+}
+/* 登录oem LOGO */
+#login-content #login-head #login_img{
+    position: absolute;
+    width: 45px;
+    left: 59px;
+    top: 10px;
+}
+/* 登录按钮 */
+#login-content #cont_box .log_btn{
+	background: #0068B7 !important;
+}
+#login-content #cont_box .log_btn:hover{
+    background: #4294d2 !important;
+}
+/*登录语言选择*/
+#lang ul li:hover {
+    color: #0068B7;
+}
+/* index页头部menu颜色 */
+header{
+	background: #0068B7;
+}
+/* index 头部字体颜色 */
+header .Dashboard a{
+	color: #fff;
+}
+/* index 头部选中字体颜色 */
+header .Dashboard a.router-link-exact-active.router-link-active.active-menu{
+	color: #66CCFF !important; 
+}
+/* index logo大小 */
+#logo #index_img{
+    height: 25px;
+    width: auto;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+}
+#logo #index_title{
+    font-size: 20px;
+    position: absolute;
+    left: 70px;
+}
+/*头部图标悬浮字体颜色*/
+.head_sel li:hover a {
+    color: #66CCFF;
+}
+.head_sel_long li:hover a:not(.more_center){
+    color: #66CCFF;
+}
+/*头部图标颜色*/
+.head_icon{
+    color: #fff;
+}
+/* 左树菜单背景色 */
+#sidebar {
+    background: #333;
+    font-size: 14px;
+}
+ul.el-menu.el-menu-vertical-demo.el-menu--dark{
+	background-color: #333;
+}
+/* ul.el-menu.el-menu-vertical-demo.el-menu--dark:hover{
+	background-color: #aaa;
+} */
+/* 左树选中菜单字体色 */
+#sidebar li.el-menu-item.is-active {
+    background: #0068B7 !important;
+}
+/* 左树菜单字体色 */
+#sidebar .el-menu--dark .el-menu-item,#sidebar .el-menu--dark .el-submenu__title {
+    color: #fff;
+}
+/* 左树悬浮背景色 */
+#sidebar .el-menu .el-menu-item:hover {
+    background-color: rgb(72, 87, 106);
+}
+/* 左树头（锁）背景色 */
+#sidebar .tit {
+    background: #333;
+}
+/* 左树锁的颜色*/
+#sidebar_img_top.navimg{
+    color: #fff;
+}
+/* 按钮颜色 */
+.el-button--primary{
+    color: #fff !important;
+    background-color: #20a0ff !important;
+    border-color: #20a0ff !important;
+}
+.el-button--primary:hover{
+    background: #20a0ff !important;
+    border-color: #20a0ff !important;
+    color: #fff !important;
+}
+.el-button--default:hover, .el-button--default:focus {
+    color: #20a0ff !important;
+    border-color: #20a0ff !important;
+}
+.el-button--default.el-button--primary{
+    color: #fff !important;
+}
+
+/*select下拉框颜色*/
+.el-select-dropdown__item.selected {
+    color: #fff;
+    background-color: #20a0ff !important;
+}
+/*radio 颜色*/
+.el-radio-button__orig-radio:checked + .el-radio-button__inner {
+    color: #fff !important;
+    background-color: #20a0ff !important;
+    border-color: #20a0ff !important;
+    box-shadow: -1px 0 0 0 #20a0ff !important;
+}
+.el-radio-button__inner:hover {
+    color: #20a0ff !important;
+}
+/*switch 颜色*/
+.el-switch.is-checked .el-switch__core {
+    border-color: #20a0ff !important;
+    background-color: #20a0ff !important;
+}
+/*input框 颜色*/
+.el-input__inner:focus{
+    border-color: #20a0ff !important;
+}
+/*dialog 关闭按钮*/
+.el-dialog__headerbtn:focus .el-dialog__close, .el-dialog__headerbtn:hover .el-dialog__close {
+    color: #20a0ff !important;
+}
+/*checkbox 颜色*/
+.el-checkbox__input.is-checked .el-checkbox__inner {
+    background-color: #20a0ff !important;
+    border-color: rgb(1, 144, 254) !important;
+}
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: #20a0ff !important;
+    border-color: #20a0ff !important;
+}
+.el-checkbox__inner:hover {
+    border-color: #20a0ff !important;
+}
+/* transfer框头部颜色*/
+.el-transfer-panel .el-transfer-panel__header {
+    background: rgb(251, 253, 255) !important;
+}
+/* 时间选择确定按钮 */
+.el-time-panel__btn.confirm {
+    color: #20a0ff !important;
+}
+.el-time-panel__content::after, .el-time-panel__content::before {
+    color: #fff;
+    background-color: #20a0ff !important;
+}
+/* 日期选择颜色 */
+.el-date-table td.today {
+    color: #20a0ff !important;
+}
+.el-date-table td.today:before {
+    border-top: 0.5em solid #20a0ff !important;
+}
+.el-picker-panel__icon-btn:hover {
+    color: #20a0ff !important;
+}
+.el-date-table td.in-range {
+    background-color: rgb(210, 236, 255) !important;
+}
+.el-date-table td.current:not(.disabled), .el-date-table td.start-date, .el-date-table td.end-date {
+    background-color: #20a0ff !important;
+    color: #fff !important;
+}
+.el-picker-panel__link-btn {
+    color: #20a0ff !important;
+}
+/* dialog框中加号 */
+.el-button--text {
+    color: #20a0ff !important;
+}
+/* 分页器颜色 */
+.el-pager li.active {
+    border-color: #20a0ff !important;
+    background-color: #20a0ff !important;
+    color: #fff;
+}

@@ -1,0 +1,227 @@
+<?php 
+require_once 'auth_lang.php';
+$lang = get_sys_language();
+if($lang=='en'){
+	echo '<link href="./css/cover_webauth_en.css" rel="stylesheet" type="text/css">';
+}
+else{
+	echo '<link href="./css/cover_webauth.css" rel="stylesheet" type="text/css">';
+}
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="viewport" http-equiv="Content-Type" charset="utf-8" content="width=device-width, initial-scale=1" />
+<title><?php echo getCommonResource('auth.qrcode.span');?></title>
+<script src="./js/jquery-3.6.3.min.js" type="text/javascript"></script>
+<script src="./js/web_auth.js" type="text/javascript"></script>
+<!-- <link href="./css/cover_webauth.css?v=2.0" rel="stylesheet" type="text/css" /> -->
+
+<link href="./css/style.css" rel="stylesheet" type="text/css">
+<link href='./css/bootstrap.min.css' rel="stylesheet"/>
+<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+$(function(){
+});
+</script>
+</head>
+<body style="background-color:#F5F5F5;">
+<div style="padding:0;margin:0;width:100%;height:100%;">
+
+	<div id="info" class="container">
+		<div id="qocode_center" class="center" style="margin-top: 30%;">
+			<h4 class="qrcode_auth"><?php echo getCommonResource('auth.qrcode.span');?></h4>
+			<div class="qrcode_auth">
+				<img id="qrcode" name="qrcode" src=""/>
+			</div>
+		</div>
+	</div>
+
+	<div id="result" class="qrcode_div" style="display:none;">
+		<div class="center">
+		<form id="authlogin1" name="authlogin1" method="post" action="/">
+			<table border="0" cellspacing="0" cellpadding="0" class="info" style="width:300px;top:40px;">
+				<tr>
+					<td colspan="4" style="line-height:35px;padding-left:35px;color:red;font-size:10px;" id="keepalive_Prompt"></td>
+				</tr>
+				<tr>
+					<td width="80" style="line-height:25px;text-align:right;"><?php echo getCommonResource('auth.safety.loginname');?></td>
+					<td colspan="3" style="padding-left:20px;" id="login_username"></td>
+				</tr>
+				<tr>
+					<td width="80" style="line-height:25px;text-align:right;"><?php echo getCommonResource('auth.safety.loginip');?></td>
+					<td colspan="3" style="padding-left:20px;" id="login_ip"></td>
+				</tr>
+				<tr>
+					<td width="80" style="line-height:25px;text-align:right;"><?php echo getCommonResource('auth.safety.logintiem');?></td>
+					<td colspan="3" style="padding-left:20px;" id="login_time"></td>
+				</tr>
+
+				<tr>
+					<td width="80" style="line-height:25px;text-align:right;"><?php echo getCommonResource('auth.safety.onlinetime');?></td>
+					<td colspan="3" style="padding-left:20px;" id="login_duration"></td>
+				</tr>
+					<input type="hidden" id="login_duration_timer" value="0">
+					<!-- <input id="token1" name="token" type="hidden" class="admin_text" placeholder="" value="<?php echo $_SESSION['token']; ?>" required style="width: 145px"/> -->
+				<tr>
+					<td colspan="4" align="center" style="padding:20px;">
+						<input name="auth_logout" type="button" title="" value="<?php echo getCommonResource('auth.safety.logout');?>" class="input_submit" onclick="javascript:login_out();"/>&nbsp;&nbsp;&nbsp; 
+						<!-- <input name="mod_pass" type="button"  value="<?php echo getCommonResource('auth.safety.changepassword');?>" class="input_submit" id="mod_password"/> -->
+					</td>
+				</tr>
+			</table>
+		</form>
+		</div>
+	</div>
+
+</div>
+</body>
+</html>
+<script type="text/javascript">
+
+window.onload = function() {
+
+}
+
+getLoginStatus();
+changeQRcode();
+
+var param = get_param();
+var timer = 0;
+var myInterval = window.setInterval(function() {
+	changeQRcode();
+},param.t * 1000);
+
+var statusInterval = '';
+
+var resultInterval = window.setInterval(function() {
+		timer = parseInt($('#login_duration_timer').val());
+		timer++;
+		if(timer > 0){
+			$('#login_duration_timer').val(timer);
+			$('#login_duration').html(time_To_hhmmss(timer));
+		}
+},1000);
+
+/*function setLanguage(lang) {
+	if(1==lang){
+		$.ajax({
+			url:"change_language.php",
+			data:{'lang':'zh'},
+			dataType:'text',
+			type:"post",
+			success:function(data){
+				// alert(data);
+				window.location.reload();
+			}
+		})
+	}else if(2==lang){
+		$.ajax({
+			url:"change_language.php",
+			data:{'lang':'en'},
+			dataType:'text',
+			type:"post",
+			success:function(data){
+				// alert(data);
+				window.location.reload();
+			}
+		})
+	}else{
+
+	}
+}*/
+
+function login_out() {
+	$.ajax({
+		url: 'qrcode_encrypt.php?act=qrcode_logout',
+		type: 'POST',
+		data: {name: $("#login_username").html(), ip: $("#login_ip").html()},
+		async: false,
+		timeout: 30000,
+		success: function(data) {
+			$("#login_username").html('');
+			$("#login_ip").html('');
+			clearTimeout(resultInterval);
+
+			myInterval = window.setInterval(function() {
+				changeQRcode();
+			},param.t * 1000);
+
+			statusInterval = window.setInterval(function(){
+				getLoginStatus();
+			}, 2000);
+
+			$("#result").hide();
+			$("#info").show();
+		}
+	});
+}
+
+function get_param() {
+	var arr = {};
+	var tmp = window.location.search.substring(1);
+	var vars = tmp.split('&');
+	if (tmp.length !=0 && vars.length != 0) {
+		for (var i = 0; i < vars.length; i++) {
+			var pair = vars[i].split('=');
+			arr[pair[0]] = pair[1];
+		}
+	}
+
+	return arr;
+}
+
+function changeQRcode() {
+	// var timestamp = new Date().getTime();
+	var param = get_param();
+	// console.log(param, 'param');
+	if(Object.keys(param).length == 0){
+		window.location.href = '/index.html';
+	}
+	document.getElementById('qrcode').src = "/qrcode_encrypt.php?act=qrcode_generate&ip=" + param.ip + "&time=" + param.t;
+}
+
+function getLoginStatus() {
+	var param = get_param();
+	$.ajax({
+		url: 'qrcode_encrypt.php?act=qrcode_login_status',
+		type: 'POST',
+		data: {ip: param.ip},
+		async: false,
+		timeout: 30000,
+		success: function(data) {
+			clearTimeout(statusInterval);
+			if (data == '0') {
+				$("#info").show();
+				$("#result").hide();
+				statusInterval = setTimeout(function(){
+					getLoginStatus();
+				}, 2000);
+			} else {
+				var interval = '';
+				var arr = data.split('&');
+				$('#login_username').html(arr[0]);
+				$('#login_ip').html(arr[1]);
+				$('#login_time').html(arr[2]);
+				$("#login_duration_timer").val(arr[3]);
+				$("#info").hide();
+				$("#result").show();
+				clearTimeout(myInterval);
+				clearTimeout(interval);
+
+				interval = setTimeout(function(){
+					getLoginStatus();
+				}, 30 * 1000);
+
+			}
+			/*$('#auth_name').val('');
+			$('#auth_pwd').val('');
+			if (get_weburl()) location.href = '/?weburl=' + get_weburl();
+			else location.href = '/';*/
+		}
+	});
+}
+
+</script>
